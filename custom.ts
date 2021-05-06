@@ -15,7 +15,7 @@ enum MyEnum {
  * Eigen bouwstenen
  */
 //% weight=100 color=#0fbc11 icon=""
-namespace custom {
+namespace CatCar {
     /**
      * TODO: beschrijf hier je functie
      * @param n beschrijf hier de parameter, eg: 5
