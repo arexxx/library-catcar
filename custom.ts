@@ -24,8 +24,8 @@ namespace catCar {
      * @param lfblue, eg: 255
      */
     //% blockid=device_maak_koplampen
-    //% block="maak koplampen: rood: %lfred groen: %lfgreen blauw: %lfblue"
-    export function maak koplampen(lfred: number, lfgreen: number, lfblue: number): void {
+    //% block="maak koplampen:; rood: %lfred; groen: %lfgreen; blauw: %lfblue"
+    export function maakkoplampen(lfred: number, lfgreen: number, lfblue: number): void {
         // Add code here
     }
 
