@@ -16,14 +16,16 @@ enum MyEnum {
  */
 //% weight=100 color=#0fbc11 icon=""
 namespace catCar {
+
+
     /**
-     * TODO: beschrijf hier je functie
-     * @param n beschrijf hier de parameter, eg: 5
-     * @param s beschrijf hier de parameter, eg: "Hello"
-     * @param e beschrijf hier de parameter
+     * @param LFRed, eg: 255
+     * @param LFGreen, eg: 255
+     * @param LFBlue, eg: 255
      */
-    //% block
-    export function foo(n: number, s: string, e: MyEnum): void {
+    //% blockid=device_maak_koplampen
+    //% block="maak koplampen:;rood:%LFRed;groen:%LFGreen;blauw:%LFBlue"
+    export function maak koplampen(LFRed:number, LFGreen:number, LFBlue:number): void {
         // Add code here
     }
 
