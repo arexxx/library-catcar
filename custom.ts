@@ -41,9 +41,7 @@ const channel0OnStepHighByte = 0x07 // LED0_ON_H
 const channel0OffStepLowByte = 0x08 // LED0_OFF_L
 const channel0OffStepHighByte = 0x09 // LED0_OFF_H
 
-const hexChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
-
-
+//const hexChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
 
 /*
  * One function to write the to the PCA9685
@@ -52,7 +50,7 @@ const hexChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c
    const buffer = pins.createBuffer(2)
    buffer[0] = register
    buffer[1] = value
-   pins.i2cWriteBuffer(chipAddress, buffer, false)
+   pins.i2cWriteBuffer(CHIP_ADRESS, buffer, false)
  }
 
  function setPinPulseRange(pinNumber:number, onStep:number=0, offStep:number=2048, chipAddress:number): void {
@@ -75,6 +73,14 @@ const hexChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c
    write(chipAddress, pinOffset + channel0OffStepHighByte, (offStep >> 8) & 0x0F)
  }
 
+ //% block
+ export function setLedDutyCycle(ledNum:number, dutyCycle:number, chipAddress:number): void {
+     ledNum = Math.max(1, Math.min(16, ledNum))
+     dutyCycle = Math.max(0, Math.min(100, dutyCycle))
+     const pwm = (dutyCycle * (chipResolution - 1)) / 100
+     return setPinPulseRange(ledNum - 1, 0, pwm, chipAddress)
+ }
+
     /**
      * @param lfred, eg: 255
      * @param lfgreen, eg: 255
@@ -86,13 +92,7 @@ const hexChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c
         // Add code here
     }
 
-    
 
-    //% block
-    export function setLedDutyCycle(ledNum:number, dutyCycle:number, chipAddress:number): void {
-        ledNum = Math.max(1, Math.min(16, ledNum))
-        dutyCycle = Math.max(0, Math.min(100, dutyCycle))
-        const pwm = (dutyCycle * (chipResolution - 1)) / 100
-        return setPinPulseRange(ledNum - 1, 0, pwm, chipAddress)
-    }
+
+
 }
