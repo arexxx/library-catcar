@@ -33,64 +33,6 @@ namespace CC2 {
 
     const hexChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
 
-
-    export enum PinNum {
-        Pin0 = 0,
-        Pin1 = 1,
-        Pin2 = 2,
-        Pin3 = 3,
-        Pin4 = 4,
-        Pin5 = 5,
-        Pin6 = 6,
-        Pin7 = 7,
-        Pin8 = 8,
-        Pin9 = 9,
-        Pin10 = 10,
-        Pin11 = 11,
-        Pin12 = 12,
-        Pin13 = 13,
-        Pin14 = 14,
-        Pin15 = 15,
-    }
-
-    export enum ServoNum {
-        Servo1 = 1,
-        Servo2 = 2,
-        Servo3 = 3,
-        Servo4 = 4,
-        Servo5 = 5,
-        Servo6 = 6,
-        Servo7 = 7,
-        Servo8 = 8,
-        Servo9 = 9,
-        Servo10 = 10,
-        Servo11 = 11,
-        Servo12 = 12,
-        Servo13 = 13,
-        Servo14 = 14,
-        Servo15 = 15,
-        Servo16 = 16,
-    }
-
-    export enum LEDNum {
-        LED1 = 1,
-        LED2 = 2,
-        LED3 = 3,
-        LED4 = 4,
-        LED5 = 5,
-        LED6 = 6,
-        LED7 = 7,
-        LED8 = 8,
-        LED9 = 9,
-        LED10 = 10,
-        LED11 = 11,
-        LED12 = 12,
-        LED13 = 13,
-        LED14 = 14,
-        LED15 = 15,
-        LED16 = 16,
-    }
-
     export class ServoConfigObject {
         id: number;
         pinNumber: number;
@@ -224,7 +166,7 @@ namespace CC2 {
      * @param offStep The range offset (0-4095) to turn the signal off
      */
     //% block advanced=true
-    export function setPinPulseRange(pinNumber: PinNum = 0, onStep: number = 0, offStep: number = 2048, chipAddress: number = 0x40): void {
+    export function setPinPulseRange(pinNumber: number = 0, onStep: number = 0, offStep: number = 2048, chipAddress: number = 0x40): void {
         pinNumber = Math.max(0, Math.min(15, pinNumber))
         const buffer = pins.createBuffer(2)
         const pinOffset = PinRegDistance * pinNumber
@@ -254,7 +196,7 @@ namespace CC2 {
      * @param dutyCycle The duty cycle (0-100) to set the LED to
      */
     //% block
-    export function setLedDutyCycle(ledNum: LEDNum = 1, dutyCycle: number, chipAddress: number = 0x40): void {
+    export function setLedDutyCycle(ledNum: number = 1, dutyCycle: number, chipAddress: number = 0x40): void {
         ledNum = Math.max(1, Math.min(16, ledNum))
         dutyCycle = Math.max(0, Math.min(100, dutyCycle))
         const pwm = (dutyCycle * (chipResolution - 1)) / 100
