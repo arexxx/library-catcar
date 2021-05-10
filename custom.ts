@@ -10,22 +10,28 @@ namespace CC2 {
         }
     }
 
+    const chip_address = 0x41
     const MIN_CHIP_ADDRESS = 0x40
     const MAX_CHIP_ADDRESS = MIN_CHIP_ADDRESS + 62
+
     const chipResolution = 4096;
     const PrescaleReg = 0xFE //the prescale register address
+    const PinRegDistance = 4
+
     const modeRegister1 = 0x00 // MODE1
     const modeRegister1Default = 0x01
     const modeRegister2 = 0x01 // MODE2
     const modeRegister2Default = 0x04
+
     const sleep = modeRegister1Default | 0x10; // Set sleep bit to 1
     const wake = modeRegister1Default & 0xEF; // Set sleep bit to 0
     const restart = wake | 0x80; // Set restart bit to 1
+
     const allChannelsOnStepLowByte = 0xFA // ALL_LED_ON_L
     const allChannelsOnStepHighByte = 0xFB // ALL_LED_ON_H
     const allChannelsOffStepLowByte = 0xFC // ALL_LED_OFF_L
     const allChannelsOffStepHighByte = 0xFD // ALL_LED_OFF_H
-    const PinRegDistance = 4
+
     const channel0OnStepLowByte = 0x06 // LED0_ON_L
     const channel0OnStepHighByte = 0x07 // LED0_ON_H
     const channel0OffStepLowByte = 0x08 // LED0_OFF_L
