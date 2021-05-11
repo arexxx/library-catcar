@@ -175,7 +175,7 @@ namespace CC2 {
         pins.i2cWriteBuffer(chip_address, buffer, false)
     }
 
-    export function getChipConfig(address: number): ChipConfig {
+    function getChipConfig(address: number): ChipConfig {
         for (let i = 0; i < chips.length; i++) {
             if (chips[i].address === address) {
                 return chips[i]
@@ -194,8 +194,7 @@ namespace CC2 {
      * @param onStep The range offset (0-4095) to turn the signal on
      * @param offStep The range offset (0-4095) to turn the signal off
      */
-    //% block advanced=true
-    export function setPinPulseRange(pinNumber: number = 0, onStep: number = 0, offStep: number = 2048, chipAddress: number = 0x40): void {
+    function setPinPulseRange(pinNumber: number = 0, onStep: number = 0, offStep: number = 2048, chipAddress: number = 0x40): void {
         pinNumber = Math.max(0, Math.min(15, pinNumber))
         const buffer = pins.createBuffer(2)
         const pinOffset = PinRegDistance * pinNumber
@@ -217,7 +216,6 @@ namespace CC2 {
 
     /**
      * Used to set the duty cycle (0-100) of a given led connected to the PCA9685
-     * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
      * @param ledNumber The number (1-16) of the LED to set the duty cycle on
      * @param dutyCycle The duty cycle (0-100) to set the LED to
      */
@@ -234,8 +232,7 @@ namespace CC2 {
      * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
      * @param freq [40-1000] Frequency (40-1000) in hertz to run the clock cycle at; eg: 50
      */
-    //% block advanced=true
-    export function init(chipAddress: number = 0x40, newFreq: number = 50) {
+    function init(chipAddress: number = 0x40, newFreq: number = 50) {
         const buf = pins.createBuffer(2)
         const freq = (newFreq > 1000 ? 1000 : (newFreq < 40 ? 40 : newFreq))
         const prescaler = calcFreqPrescaler(freq)
@@ -269,7 +266,7 @@ namespace CC2 {
      * @param hexAddress The hex address to convert to decimal; eg: 0x40s
      */
     //% block
-    export function chipAddress(hexAddress: string): number {
+    function chipAddress(hexAddress: string): number {
         hexAddress = stripHexPrefix(hexAddress)
         let dec = 0
         let lastidx = 0
