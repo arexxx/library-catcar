@@ -3,12 +3,6 @@
  */
 //% weight=100 color=#0fbc11 icon=""
 namespace CC2 {
-    let _DEBUG: boolean = false
-    const debug = (msg: string) => {
-        if (_DEBUG === true) {
-            serial.writeLine(msg)
-        }
-    }
 
     const chip_address = 65
     const MIN_CHIP_ADDRESS = 0x40
@@ -73,14 +67,6 @@ namespace CC2 {
             this.position = -1
         }
 
-        debug() {
-            const params = this.config()
-
-            for (let j = 0; j < params.length; j = j + 2) {
-                debug(`Servo[${this.id}].${params[j]}: ${params[j + 1]}`)
-            }
-        }
-
         setOffsetsFromFreq(startFreq: number, stopFreq: number, midFreq: number = -1): void {
             this.minOffset = startFreq // calcFreqOffset(startFreq)
             this.maxOffset = stopFreq // calcFreqOffset(stopFreq)
@@ -134,10 +120,39 @@ namespace CC2 {
 
 
 
-
-    function calcFreqPrescaler(freq: number): number {
-        return (25000000 / (freq * chipResolution)) - 1;
+    function writeCC(chip_address: number, register: number, value: number): void {
+        const buffer = pins.createBuffer(2)
+        buffer[0] = register
+        buffer[1] = value
+        pins.i2cWriteBuffer(chip_address, buffer, false)
     }
+
+    function writeloop(pinNumber: number = 0, onStep: number = 0, offStep: number = 2048, chipAddress: number = 0x40): void {
+        pinNumber = Math.max(0, Math.min(15, pinNumber))
+        const buffer = pins.createBuffer(2)
+        const pinOffset = PinRegDistance * pinNumber
+        onStep = Math.max(0, Math.min(4095, onStep))
+        offStep = Math.max(0, Math.min(4095, offStep))
+
+        // Low byte of onStep
+        write(chip_address, pinOffset + channel0OnStepLowByte, onStep & 0xFF)
+        // High byte of onStep
+        write(chip_address, pinOffset + channel0OnStepHighByte, (onStep >> 8) & 0x0F)
+        // Low byte of offStep
+        write(chip_address, pinOffset + channel0OffStepLowByte, offStep & 0xFF)
+        // High byte of offStep
+        write(chip_address, pinOffset + channel0OffStepHighByte, (offStep >> 8) & 0x0F)
+    }
+
+
+
+
+
+
+
+
+
+
 
     function stripHexPrefix(str: string): string {
         if (str.length === 2) {
@@ -159,11 +174,9 @@ namespace CC2 {
     export function getChipConfig(address: number): ChipConfig {
         for (let i = 0; i < chips.length; i++) {
             if (chips[i].address === address) {
-                debug(`Returning chip ${i}`)
                 return chips[i]
             }
         }
-        debug(`Creating new chip for address ${address}`)
         const chip = new ChipConfig(address)
         const index = chips.length
         chips.push(chip)
@@ -184,9 +197,6 @@ namespace CC2 {
         const pinOffset = PinRegDistance * pinNumber
         onStep = Math.max(0, Math.min(4095, onStep))
         offStep = Math.max(0, Math.min(4095, offStep))
-
-        debug(`setPinPulseRange(${pinNumber}, ${onStep}, ${offStep}, ${chipAddress})`)
-        debug(`  pinOffset ${pinOffset}`)
 
         // Low byte of onStep
         write(chip_address, pinOffset + channel0OnStepLowByte, onStep & 0xFF)
@@ -212,35 +222,7 @@ namespace CC2 {
         ledNum = Math.max(1, Math.min(16, ledNum))
         dutyCycle = Math.max(0, Math.min(100, dutyCycle))
         const pwm = (dutyCycle * (chipResolution - 1)) / 100
-        debug(`setLedDutyCycle(${ledNum}, ${dutyCycle}, ${chipAddress})`)
         return setPinPulseRange(ledNum - 1, 0, pwm, chipAddress)
-    }
-
-    /**
-     * Used to setup the chip, will cause the chip to do a full reset and turn off all outputs.
-     * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
-     * @param freq [40-1000] Frequency (40-1000) in hertz to run the clock cycle at; eg: 50
-     */
-    //% block advanced=true
-    export function init(chipAddress: number = 0x40, newFreq: number = 50) {
-        debug(`Init chip at address ${chipAddress} to ${newFreq}Hz`)
-        const buf = pins.createBuffer(2)
-        const freq = (newFreq > 1000 ? 1000 : (newFreq < 40 ? 40 : newFreq))
-        const prescaler = calcFreqPrescaler(freq)
-
-        write(chipAddress, modeRegister1, sleep)
-
-        write(chipAddress, PrescaleReg, prescaler)
-
-        write(chipAddress, allChannelsOnStepLowByte, 0x00)
-        write(chipAddress, allChannelsOnStepHighByte, 0x00)
-        write(chipAddress, allChannelsOffStepLowByte, 0x00)
-        write(chipAddress, allChannelsOffStepHighByte, 0x00)
-
-        write(chipAddress, modeRegister1, wake)
-
-        control.waitMicros(1000)
-        write(chipAddress, modeRegister1, restart)
     }
 
     /**
@@ -271,9 +253,5 @@ namespace CC2 {
             dec = dec + (idx * Math.pow(16, pos))
         }
         return dec
-    }
-
-    export function setDebug(debugEnabled: boolean): void {
-        _DEBUG = debugEnabled
     }
 }
