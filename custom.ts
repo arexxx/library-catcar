@@ -154,6 +154,10 @@ namespace CC2 {
 
 
 
+    function calcFreqPrescaler(freq: number): number {
+        return (25000000 / (freq * chipResolution)) - 1;
+    }
+
     function stripHexPrefix(str: string): string {
         if (str.length === 2) {
             return str
@@ -223,6 +227,32 @@ namespace CC2 {
         dutyCycle = Math.max(0, Math.min(100, dutyCycle))
         const pwm = (dutyCycle * (chipResolution - 1)) / 100
         return setPinPulseRange(ledNum - 1, 0, pwm, chipAddress)
+    }
+
+    /**
+     * Used to setup the chip, will cause the chip to do a full reset and turn off all outputs.
+     * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
+     * @param freq [40-1000] Frequency (40-1000) in hertz to run the clock cycle at; eg: 50
+     */
+    //% block advanced=true
+    export function init(chipAddress: number = 0x40, newFreq: number = 50) {
+        const buf = pins.createBuffer(2)
+        const freq = (newFreq > 1000 ? 1000 : (newFreq < 40 ? 40 : newFreq))
+        const prescaler = calcFreqPrescaler(freq)
+
+        write(chipAddress, modeRegister1, sleep)
+
+        write(chipAddress, PrescaleReg, prescaler)
+
+        write(chipAddress, allChannelsOnStepLowByte, 0x00)
+        write(chipAddress, allChannelsOnStepHighByte, 0x00)
+        write(chipAddress, allChannelsOffStepLowByte, 0x00)
+        write(chipAddress, allChannelsOffStepHighByte, 0x00)
+
+        write(chipAddress, modeRegister1, wake)
+
+        control.waitMicros(1000)
+        write(chipAddress, modeRegister1, restart)
     }
 
     /**
