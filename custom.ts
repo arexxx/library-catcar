@@ -10,7 +10,7 @@ namespace CC2 {
         }
     }
 
-    const chip_address = 0x41
+    const chip_address = 65
     const MIN_CHIP_ADDRESS = 0x40
     const MAX_CHIP_ADDRESS = MIN_CHIP_ADDRESS + 62
 
@@ -129,6 +129,12 @@ namespace CC2 {
 
     export const chips: ChipConfig[] = []
 
+
+
+
+
+
+
     function calcFreqPrescaler(freq: number): number {
         return (25000000 / (freq * chipResolution)) - 1;
     }
@@ -143,7 +149,7 @@ namespace CC2 {
         return str
     }
 
-    function write(chipAddress: number, register: number, value: number): void {
+    function write(chip_address: number, register: number, value: number): void {
         const buffer = pins.createBuffer(2)
         buffer[0] = register
         buffer[1] = value
