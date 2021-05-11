@@ -153,7 +153,7 @@ namespace CC2 {
         const buffer = pins.createBuffer(2)
         buffer[0] = register
         buffer[1] = value
-        pins.i2cWriteBuffer(chipAddress, buffer, false)
+        pins.i2cWriteBuffer(chip_address, buffer, false)
     }
 
     export function getChipConfig(address: number): ChipConfig {
