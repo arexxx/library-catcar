@@ -224,7 +224,7 @@ namespace CC2 {
         ledNum = Math.max(1, Math.min(16, ledNum))
         dutyCycle = Math.max(0, Math.min(100, dutyCycle))
         const pwm = (dutyCycle * (chipResolution - 1)) / 100
-        return setPinPulseRange(ledNum - 1, 0, pwm, chipAddress)
+        return setPinPulseRange(ledNum - 1, 0, pwm, chip_address)
     }
 
     /**
@@ -257,7 +257,7 @@ namespace CC2 {
      */
     //% block
     export function reset(): void {
-        return init(chip_address, getChipConfig(chipAddress).freq);
+        return init(chip_address, getChipConfig(chip_address).freq);
     }
 
     /**
