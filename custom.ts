@@ -32,6 +32,7 @@ namespace CC2 {
     const channel0OffStepHighByte = 0x09 // LED0_OFF_H
 
     const hexChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
+    
 
     export class ServoConfigObject {
         id: number;
@@ -158,33 +159,11 @@ namespace CC2 {
         return (25000000 / (freq * chipResolution)) - 1;
     }
 
-    function stripHexPrefix(str: string): string {
-        if (str.length === 2) {
-            return str
-        }
-        if (str.substr(0, 2) === '0x') {
-            return str.substr(-2, 2)
-        }
-        return str
-    }
-
     function write(chip_address: number, register: number, value: number): void {
         const buffer = pins.createBuffer(2)
         buffer[0] = register
         buffer[1] = value
         pins.i2cWriteBuffer(chip_address, buffer, false)
-    }
-
-    function getChipConfig(address: number): ChipConfig {
-        for (let i = 0; i < chips.length; i++) {
-            if (chips[i].address === address) {
-                return chips[i]
-            }
-        }
-        const chip = new ChipConfig(address)
-        const index = chips.length
-        chips.push(chip)
-        return chips[index]
     }
 
     /**
@@ -214,18 +193,34 @@ namespace CC2 {
         write(chip_address, pinOffset + channel0OffStepHighByte, (offStep >> 8) & 0x0F)
     }
 
+
+
+
+
+
+
     /**
-     * Used to set the duty cycle (0-100) of a given led connected to the PCA9685
-     * @param ledNumber The number (1-16) of the LED to set the duty cycle on
-     * @param dutyCycle The duty cycle (0-100) to set the LED to
+     * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs.
      */
     //% block
-    export function setLedDutyCycle(ledNum: number = 1, dutyCycle: number): void {
-        ledNum = Math.max(1, Math.min(16, ledNum))
-        dutyCycle = Math.max(0, Math.min(100, dutyCycle))
-        const pwm = (dutyCycle * (chipResolution - 1)) / 100
-        return setPinPulseRange(ledNum - 1, 0, pwm, chip_address)
+    export function reset(): void {
+        return init(chip_address, getChipConfig(chip_address).freq);
     }
+
+
+    function getChipConfig(address: number): ChipConfig {
+        for (let i = 0; i < chips.length; i++) {
+            if (chips[i].address === address) {
+                return chips[i]
+            }
+        }
+        const chip = new ChipConfig(address)
+        const index = chips.length
+        chips.push(chip)
+        return chips[index]
+    }
+
+
 
     /**
      * Used to setup the chip, will cause the chip to do a full reset and turn off all outputs.
@@ -250,34 +245,5 @@ namespace CC2 {
 
         control.waitMicros(1000)
         write(chipAddress, modeRegister1, restart)
-    }
-
-    /**
-     * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs.
-     */
-    //% block
-    export function reset(): void {
-        return init(chip_address, getChipConfig(chip_address).freq);
-    }
-
-    /**
-     * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs.
-     * @param hexAddress The hex address to convert to decimal; eg: 0x40s
-     */
-    //% block
-    function chipAddress(hexAddress: string): number {
-        hexAddress = stripHexPrefix(hexAddress)
-        let dec = 0
-        let lastidx = 0
-        let lastchar = 0
-        const l = Math.min(2, hexAddress.length)
-        for (let i = 0; i < l; i++) {
-            const char = hexAddress.charAt(i)
-            const idx = hexChars.indexOf(char)
-            const pos = l - i - 1
-            lastidx = pos
-            dec = dec + (idx * Math.pow(16, pos))
-        }
-        return dec
     }
 }
