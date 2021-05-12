@@ -5,12 +5,12 @@
 namespace CC2 {
 
     const chip_address = 65
-    const MIN_CHIP_ADDRESS = 0x40
-    const MAX_CHIP_ADDRESS = MIN_CHIP_ADDRESS + 62
 
     const chipResolution = 4096;
     const PrescaleReg = 0xFE //the prescale register address
     const PinRegDistance = 4
+    const osc_clock = 25000000
+    const pca_frequency = 200
 
     const modeRegister1 = 0x00 // MODE1
     const modeRegister1Default = 0x01
@@ -32,7 +32,7 @@ namespace CC2 {
     const channel0OffStepHighByte = 0x09 // LED0_OFF_H
 
     const hexChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
-    
+
 
     export class ServoConfigObject {
         id: number;
@@ -121,14 +121,24 @@ namespace CC2 {
 
 
 
-    function writeCC(chip_address: number, register: number, value: number): void {
+
+
+
+
+
+
+
+
+
+
+    function writePCA(chip_address: number, register: number, value: number): void {
         const buffer = pins.createBuffer(2)
         buffer[0] = register
         buffer[1] = value
         pins.i2cWriteBuffer(chip_address, buffer, false)
     }
 
-    function writeloop(pinNumber: number = 0, onStep: number = 0, offStep: number = 2048, chipAddress: number = 0x40): void {
+    function writeloop(pinNumber, onStep: number = 0, offStep: number = 2048): void {
         pinNumber = Math.max(0, Math.min(15, pinNumber))
         const buffer = pins.createBuffer(2)
         const pinOffset = PinRegDistance * pinNumber
@@ -136,114 +146,54 @@ namespace CC2 {
         offStep = Math.max(0, Math.min(4095, offStep))
 
         // Low byte of onStep
-        write(chip_address, pinOffset + channel0OnStepLowByte, onStep & 0xFF)
+        writePCA(chip_address, pinOffset + channel0OnStepLowByte, onStep & 0xFF)
         // High byte of onStep
-        write(chip_address, pinOffset + channel0OnStepHighByte, (onStep >> 8) & 0x0F)
+        writePCA(chip_address, pinOffset + channel0OnStepHighByte, (onStep >> 8) & 0x0F)
         // Low byte of offStep
-        write(chip_address, pinOffset + channel0OffStepLowByte, offStep & 0xFF)
+        writePCA(chip_address, pinOffset + channel0OffStepLowByte, offStep & 0xFF)
         // High byte of offStep
-        write(chip_address, pinOffset + channel0OffStepHighByte, (offStep >> 8) & 0x0F)
+        writePCA(chip_address, pinOffset + channel0OffStepHighByte, (offStep >> 8) & 0x0F)
     }
 
 
-
-
-
-
-
-
-
-
-
-    function calcFreqPrescaler(freq: number): number {
-        return (25000000 / (freq * chipResolution)) - 1;
-    }
-
-    function write(chip_address: number, register: number, value: number): void {
-        const buffer = pins.createBuffer(2)
-        buffer[0] = register
-        buffer[1] = value
-        pins.i2cWriteBuffer(chip_address, buffer, false)
-    }
-
-    /**
-     * Used to set the pulse range (0-4095) of a given pin on the PCA9685
-     * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
-     * @param pinNumber The pin number (0-15) to set the pulse range on
-     * @param onStep The range offset (0-4095) to turn the signal on
-     * @param offStep The range offset (0-4095) to turn the signal off
-     */
-    function setPinPulseRange(pinNumber: number = 0, onStep: number = 0, offStep: number = 2048, chipAddress: number = 0x40): void {
-        pinNumber = Math.max(0, Math.min(15, pinNumber))
-        const buffer = pins.createBuffer(2)
-        const pinOffset = PinRegDistance * pinNumber
-        onStep = Math.max(0, Math.min(4095, onStep))
-        offStep = Math.max(0, Math.min(4095, offStep))
-
-        // Low byte of onStep
-        write(chip_address, pinOffset + channel0OnStepLowByte, onStep & 0xFF)
-
-        // High byte of onStep
-        write(chip_address, pinOffset + channel0OnStepHighByte, (onStep >> 8) & 0x0F)
-
-        // Low byte of offStep
-        write(chip_address, pinOffset + channel0OffStepLowByte, offStep & 0xFF)
-
-        // High byte of offStep
-        write(chip_address, pinOffset + channel0OffStepHighByte, (offStep >> 8) & 0x0F)
-    }
-
-
-
-
-
+//_____________________________________________________________________________________________________//
 
 
     /**
-     * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs.
+     * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs
      */
-    //% block
-    export function reset(): void {
-        return init(chip_address, getChipConfig(chip_address).freq);
-    }
+    export function resetLedsEnMotor(): void {
+        const prescaler = (osc_clock / (pca_frequency * chipResolution)) - 1;
 
+        writePCA(chipAddress, modeRegister1, sleep)
 
-    function getChipConfig(address: number): ChipConfig {
-        for (let i = 0; i < chips.length; i++) {
-            if (chips[i].address === address) {
-                return chips[i]
-            }
-        }
-        const chip = new ChipConfig(address)
-        const index = chips.length
-        chips.push(chip)
-        return chips[index]
-    }
+        writePCA(chipAddress, PrescaleReg, prescaler)
 
+        writePCA(chipAddress, allChannelsOnStepLowByte, 0x00)
+        writePCA(chipAddress, allChannelsOnStepHighByte, 0x00)
+        writePCA(chipAddress, allChannelsOffStepLowByte, 0x00)
+        writePCA(chipAddress, allChannelsOffStepHighByte, 0x00)
 
-
-    /**
-     * Used to setup the chip, will cause the chip to do a full reset and turn off all outputs.
-     * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
-     * @param freq [40-1000] Frequency (40-1000) in hertz to run the clock cycle at; eg: 50
-     */
-    function init(chipAddress: number = 0x40, newFreq: number = 50) {
-        const buf = pins.createBuffer(2)
-        const freq = (newFreq > 1000 ? 1000 : (newFreq < 40 ? 40 : newFreq))
-        const prescaler = calcFreqPrescaler(freq)
-
-        write(chipAddress, modeRegister1, sleep)
-
-        write(chipAddress, PrescaleReg, prescaler)
-
-        write(chipAddress, allChannelsOnStepLowByte, 0x00)
-        write(chipAddress, allChannelsOnStepHighByte, 0x00)
-        write(chipAddress, allChannelsOffStepLowByte, 0x00)
-        write(chipAddress, allChannelsOffStepHighByte, 0x00)
-
-        write(chipAddress, modeRegister1, wake)
+        writePCA(chipAddress, modeRegister1, wake)
 
         control.waitMicros(1000)
-        write(chipAddress, modeRegister1, restart)
+        writePCA(chipAddress, modeRegister1, restart)
     }
+
+
+    /**
+     * Used to set the duty cycle (0-100) of a given led connected to the PCA9685
+     * @param dutyCycle The duty cycle (0-100) to set the LED to
+     */
+    //% block
+    export function maakKoplampRood(dutyCycle: number): void {
+        ledNum = 0;
+        dutyCycle = Math.max(0, Math.min(100, dutyCycle))
+
+        const pwm = (dutyCycle * (chipResolution - 1)) / 100
+        return writeloop(ledNum, 0, pwm)
+    }
+
+    
+
 }
