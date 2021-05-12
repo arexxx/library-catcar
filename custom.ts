@@ -32,6 +32,12 @@ namespace CC2 {
     const channel0OffStepHighByte = 0x09 // LED0_OFF_H
 
 
+    export enum Turn {
+      links = 1,
+      rechts = 2,
+    }
+
+
 //_____________________________________________________________________________________________________//
 
 
@@ -128,4 +134,30 @@ namespace CC2 {
         const pwm_bry = (backRyellow * (chipResolution - 1)) / 100
         writeloop(10, 0, pwm_bry)
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+    * blablablabla
+    * @param turning kiezen tussen links en rechts draaien
+    * @param speed snelheid van de motor in %, eg:0-100
+    *
+    */
+    //% block="Draai %turning met snelheid % %speed"
+    export function draaien(turning: Turn = 1, speed: number){
+
+    }
+
+
+
+
 }
