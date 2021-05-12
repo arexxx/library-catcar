@@ -88,14 +88,22 @@ namespace CC2 {
 
     /**
      * Used to set the duty cycle (0-100) of a given led connected to the PCA9685
-     * @param dutyCycle The duty cycle (0-100) to set the LED to
+     * @param frontred, eg:0-100
+     * @param frontgreen, eg:0-100
+     * @param frontblue, eg:0-100
      */
-    //% block
-    export function maakKoplampRood(dutyCycle: number): void {
-        const ledNum = 0;
-        dutyCycle = Math.max(0, Math.min(100, dutyCycle))
+    //% block="Maak koplampen: Rood%frontred Groen%frontgreen Blauw%frontblue"
+    export function maakKoplampen(frontred: number, frontgreen: number, frontblue: number): void {
+        frontred = Math.max(0, Math.min(100, frontred))
+        const pwm = (frontred * (chipResolution - 1)) / 100
+        return writeloop(0, 0, pwm)
 
-        const pwm = (dutyCycle * (chipResolution - 1)) / 100
-        return writeloop(ledNum, 0, pwm)
+        frontgreen = Math.max(0, Math.min(100, frontgreen))
+        const pwm = (frontgreen * (chipResolution - 1)) / 100
+        return writeloop(1, 0, pwm)
+
+        frontblue = Math.max(0, Math.min(100, frontblue))
+        const pwm = (frontblue * (chipResolution - 1)) / 100
+        return writeloop(2, 0, pwm)
     }
 }
