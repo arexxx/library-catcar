@@ -153,8 +153,23 @@ namespace CC2 {
     *
     */
     //% block="Draai %turning met snelheid %speed"
-    export function draaien(turning: Turn = 1, speed: number){
+    export function draaien(turning: Turn = 1, speed: number): void {
+      turning = Math.max(1, Math.min(2, turning))
+      const pwm_spd = (speed * (chipResolution - 1)) / 100
 
+      if(turning === 1) {
+        writeloop(12, 0, pwm_spd)
+        writeloop(13, 0, 0)
+        writeloop(14, 0, pwm_spd)
+        writeloop(15, 0, 0)
+      }
+
+      if(turning === 2) {
+        writeloop(12, 0, 0)
+        writeloop(13, 0, pwm_spd)
+        writeloop(14, 0, 0)
+        writeloop(15, 0, pwm_spd)
+      }
     }
 
 
