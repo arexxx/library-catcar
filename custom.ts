@@ -95,15 +95,15 @@ namespace CC2 {
     //% block="Maak koplampen: Rood%frontred Groen%frontgreen Blauw%frontblue"
     export function maakKoplampen(frontred: number, frontgreen: number, frontblue: number): void {
         frontred = Math.max(0, Math.min(100, frontred))
-        const pwm = (frontred * (chipResolution - 1)) / 100
-        return writeloop(0, 0, pwm)
+        const pwm_fr = (frontred * (chipResolution - 1)) / 100
+        return writeloop(0, 0, pwm_fr)
 
         frontgreen = Math.max(0, Math.min(100, frontgreen))
-        const pwm = (frontgreen * (chipResolution - 1)) / 100
-        return writeloop(1, 0, pwm)
+        const pwm_fg = (frontgreen * (chipResolution - 1)) / 100
+        return writeloop(1, 0, pwm_fg)
 
         frontblue = Math.max(0, Math.min(100, frontblue))
-        const pwm = (frontblue * (chipResolution - 1)) / 100
-        return writeloop(2, 0, pwm)
+        const pwm_fb = (frontblue * (chipResolution - 1)) / 100
+        return writeloop(2, 0, pwm_fb)
     }
 }
