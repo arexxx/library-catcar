@@ -96,14 +96,14 @@ namespace CC2 {
     export function maakKoplampen(frontred: number, frontgreen: number, frontblue: number): void {
         frontred = Math.max(0, Math.min(100, frontred))
         const pwm_fr = (frontred * (chipResolution - 1)) / 100
-        return writeloop(0, 0, pwm_fr)
+        writeloop(0, 0, pwm_fr)
 
         frontgreen = Math.max(0, Math.min(100, frontgreen))
         const pwm_fg = (frontgreen * (chipResolution - 1)) / 100
-        return writeloop(1, 0, pwm_fg)
+        writeloop(1, 0, pwm_fg)
 
         frontblue = Math.max(0, Math.min(100, frontblue))
         const pwm_fb = (frontblue * (chipResolution - 1)) / 100
-        return writeloop(2, 0, pwm_fb)
+        writeloop(2, 0, pwm_fb)
     }
 }
