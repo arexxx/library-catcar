@@ -152,7 +152,7 @@ namespace CC2 {
     * @param speed snelheid van de motor in %, eg:0-100
     *
     */
-    //% block="Draai %turning met snelheid % %speed"
+    //% block="Draai %turning met snelheid %speed"
     export function draaien(turning: Turn = 1, speed: number){
 
     }
