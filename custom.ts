@@ -42,7 +42,7 @@ namespace CC2 {
         pins.i2cWriteBuffer(chip_address, buffer, false)
     }
 
-    function writeloop(pinNumber, onStep: number = 0, offStep: number = 2048): void {
+    function writeloop(pinNumber: number, onStep: number = 0, offStep: number = 2048): void {
         pinNumber = Math.max(0, Math.min(15, pinNumber))
         const buffer = pins.createBuffer(2)
         const pinOffset = PinRegDistance * pinNumber
