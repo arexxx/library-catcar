@@ -31,104 +31,8 @@ namespace CC2 {
     const channel0OffStepLowByte = 0x08 // LED0_OFF_L
     const channel0OffStepHighByte = 0x09 // LED0_OFF_H
 
-    const hexChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
 
-
-    export class ServoConfigObject {
-        id: number;
-        pinNumber: number;
-        minOffset: number;
-        midOffset: number;
-        maxOffset: number;
-        position: number;
-    }
-
-    export const DefaultServoConfig = new ServoConfigObject();
-    DefaultServoConfig.pinNumber = -1
-    DefaultServoConfig.minOffset = 5
-    DefaultServoConfig.midOffset = 15
-    DefaultServoConfig.maxOffset = 25
-    DefaultServoConfig.position = 90
-
-    export class ServoConfig {
-        id: number;
-        pinNumber: number;
-        minOffset: number;
-        midOffset: number;
-        maxOffset: number;
-        position: number;
-        constructor(id: number, config: ServoConfigObject) {
-            this.id = id
-            this.init(config)
-        }
-
-        init(config: ServoConfigObject) {
-            this.pinNumber = config.pinNumber > -1 ? config.pinNumber : this.id - 1
-            this.setOffsetsFromFreq(config.minOffset, config.maxOffset, config.midOffset)
-            this.position = -1
-        }
-
-        setOffsetsFromFreq(startFreq: number, stopFreq: number, midFreq: number = -1): void {
-            this.minOffset = startFreq // calcFreqOffset(startFreq)
-            this.maxOffset = stopFreq // calcFreqOffset(stopFreq)
-            this.midOffset = midFreq > -1 ? midFreq : ((stopFreq - startFreq) / 2) + startFreq
-        }
-
-        config(): string[] {
-            return [
-                'id', this.id.toString(),
-                'pinNumber', this.pinNumber.toString(),
-                'minOffset', this.minOffset.toString(),
-                'maxOffset', this.maxOffset.toString(),
-                'position', this.position.toString(),
-            ]
-        }
-    }
-
-    export class ChipConfig {
-        address: number;
-        servos: ServoConfig[];
-        freq: number;
-        constructor(address: number = 0x40, freq: number = 50) {
-            this.address = address
-            this.servos = [
-                new ServoConfig(1, DefaultServoConfig),
-                new ServoConfig(2, DefaultServoConfig),
-                new ServoConfig(3, DefaultServoConfig),
-                new ServoConfig(4, DefaultServoConfig),
-                new ServoConfig(5, DefaultServoConfig),
-                new ServoConfig(6, DefaultServoConfig),
-                new ServoConfig(7, DefaultServoConfig),
-                new ServoConfig(8, DefaultServoConfig),
-                new ServoConfig(9, DefaultServoConfig),
-                new ServoConfig(10, DefaultServoConfig),
-                new ServoConfig(11, DefaultServoConfig),
-                new ServoConfig(12, DefaultServoConfig),
-                new ServoConfig(13, DefaultServoConfig),
-                new ServoConfig(14, DefaultServoConfig),
-                new ServoConfig(15, DefaultServoConfig),
-                new ServoConfig(16, DefaultServoConfig)
-            ]
-            this.freq = freq
-            init(address, freq)
-        }
-    }
-
-    export const chips: ChipConfig[] = []
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//_____________________________________________________________________________________________________//
 
 
     function writePCA(chip_address: number, register: number, value: number): void {
@@ -165,19 +69,19 @@ namespace CC2 {
     export function resetLedsEnMotor(): void {
         const prescaler = (osc_clock / (pca_frequency * chipResolution)) - 1;
 
-        writePCA(chipAddress, modeRegister1, sleep)
+        writePCA(chip_address, modeRegister1, sleep)
 
-        writePCA(chipAddress, PrescaleReg, prescaler)
+        writePCA(chip_address, PrescaleReg, prescaler)
 
-        writePCA(chipAddress, allChannelsOnStepLowByte, 0x00)
-        writePCA(chipAddress, allChannelsOnStepHighByte, 0x00)
-        writePCA(chipAddress, allChannelsOffStepLowByte, 0x00)
-        writePCA(chipAddress, allChannelsOffStepHighByte, 0x00)
+        writePCA(chip_address, allChannelsOnStepLowByte, 0x00)
+        writePCA(chip_address, allChannelsOnStepHighByte, 0x00)
+        writePCA(chip_address, allChannelsOffStepLowByte, 0x00)
+        writePCA(chip_address, allChannelsOffStepHighByte, 0x00)
 
-        writePCA(chipAddress, modeRegister1, wake)
+        writePCA(chip_address, modeRegister1, wake)
 
         control.waitMicros(1000)
-        writePCA(chipAddress, modeRegister1, restart)
+        writePCA(chip_address, modeRegister1, restart)
     }
 
 
@@ -187,13 +91,10 @@ namespace CC2 {
      */
     //% block
     export function maakKoplampRood(dutyCycle: number): void {
-        ledNum = 0;
+        const ledNum = 0;
         dutyCycle = Math.max(0, Math.min(100, dutyCycle))
 
         const pwm = (dutyCycle * (chipResolution - 1)) / 100
         return writeloop(ledNum, 0, pwm)
     }
-
-    
-
 }
