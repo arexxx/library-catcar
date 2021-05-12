@@ -66,6 +66,7 @@ namespace CC2 {
     /**
      * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs
      */
+    //% block
     export function resetLedsEnMotor(): void {
         const prescaler = (osc_clock / (pca_frequency * chipResolution)) - 1;
 
