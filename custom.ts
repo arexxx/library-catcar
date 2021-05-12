@@ -106,4 +106,26 @@ namespace CC2 {
         const pwm_fb = (frontblue * (chipResolution - 1)) / 100
         writeloop(2, 0, pwm_fb)
     }
+
+
+    /**
+     * Used to set the duty cycle (0-100) of a given led connected to the PCA9685
+     * @param backred, eg:0-100
+     * @param backLyellow, eg:0-100
+     * @param backRyellow, eg:0-100
+     */
+    //% block="Maak achterlampen: geel links%backLyellow rood%backred geel rechts%backRyellow"
+    export function maakAchterlampen(backLyellow: number, backred: number, backRyellow: number): void {
+        backLyellow = Math.max(0, Math.min(100, backLyellow))
+        const pwm_bly = (backLyellow * (chipResolution - 1)) / 100
+        writeloop(11, 0, pwm_bly)
+
+        backred = Math.max(0, Math.min(100, backred))
+        const pwm_br = (backred * (chipResolution - 1)) / 100
+        writeloop(9, 0, pwm_br)
+
+        backRyellow = Math.max(0, Math.min(100, backRyellow))
+        const pwm_bry = (backRyellow * (chipResolution - 1)) / 100
+        writeloop(10, 0, pwm_bry)
+    }
 }
