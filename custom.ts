@@ -125,7 +125,7 @@ namespace CC2 {
      * @param backLyellow, eg:0-100
      * @param backRyellow, eg:0-100
      */
-    //% block="Maak achterlampen:%\n geel links%backLyellow rood%backred geel rechts%backRyellow"
+    //% block="Maak achterlampen: geel links%backLyellow rood%backred geel rechts%backRyellow"
     export function maakAchterlampen(backLyellow: number, backred: number, backRyellow: number): void {
         backLyellow = Math.max(0, Math.min(100, backLyellow))
         const pwm_bly = (backLyellow * (chipResolution - 1)) / 100
@@ -139,6 +139,8 @@ namespace CC2 {
         const pwm_bry = (backRyellow * (chipResolution - 1)) / 100
         writeloop(10, 0, pwm_bry)
     }
+
+
 
 
 
