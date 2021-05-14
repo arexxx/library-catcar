@@ -182,7 +182,7 @@ namespace CC2 {
     * @param direction kiezen tussen links en rechts draaien
     * @param speed snelheid van de motor in %, eg:0-100
     */
-    //% block="rijden %direction met snelheid %speed"
+    //% block="rijden %direction met snelheid % %speed"
     export function rijden(direction: Directions = 5, speed: number): void {
       direction = Math.max(5, Math.min(6, direction))
       const pwm_spd = (speed * (chipResolution - 1)) / 100
