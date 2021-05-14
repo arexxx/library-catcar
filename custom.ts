@@ -142,15 +142,6 @@ namespace CC2 {
 
 
 
-
-
-
-
-
-
-
-
-
     /**
     * blablablabla
     * @param turning kiezen tussen links en rechts draaien
