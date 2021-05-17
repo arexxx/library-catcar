@@ -151,7 +151,7 @@ namespace CC2 {
     * @param turning kiezen tussen links en rechts draaien
     * @param speed snelheid van de motor in %, eg:0-100
     */
-    //% block="Draai %turning met snelheid %speed ${ @procent }"
+    //% block="Draai %turning met snelheid %speed ${ %procent }"
     export function draaien(turning: Turn = 1, speed: number): void {
       turning = Math.max(1, Math.min(2, turning))
       const pwm_spd = (speed * (chipResolution - 1)) / 100
