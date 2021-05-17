@@ -31,7 +31,7 @@ namespace CC2 {
     const channel0OffStepLowByte = 0x08 // LED0_OFF_L
     const channel0OffStepHighByte = 0x09 // LED0_OFF_H
 
-    const leesteken = "%"
+    const leesteken = {%}
 
     export enum Turn {
       links = 1,
