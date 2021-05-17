@@ -31,7 +31,7 @@ namespace CC2 {
     const channel0OffStepLowByte = 0x08 // LED0_OFF_L
     const channel0OffStepHighByte = 0x09 // LED0_OFF_H
 
-    const leesteken = {%}
+
 
     export enum Turn {
       links = 1,
@@ -176,7 +176,7 @@ namespace CC2 {
     * @param direction kiezen tussen links en rechts draaien
     * @param speed snelheid van de motor in %, eg:0-100
     */
-    //% block="rijden %direction met snelheid %speed %leesteken"
+    //% block="rijden %direction met snelheid %speed"
     export function rijden(direction: Directions = 5, speed: number): void {
       direction = Math.max(5, Math.min(6, direction))
       const pwm_spd = (speed * (chipResolution - 1)) / 100
