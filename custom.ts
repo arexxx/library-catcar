@@ -31,8 +31,8 @@ namespace CC2 {
     const channel0OffStepLowByte = 0x08 // LED0_OFF_L
     const channel0OffStepHighByte = 0x09 // LED0_OFF_H
 
-    let windMPH = 0
-    let numWindTurns = 0
+    let windMPH: number = 0
+    let numWindTurns: number = 0
     let windMonitorStarted = false
 
 
@@ -271,8 +271,8 @@ namespace CC2 {
         // Update MPH value every 1 seconds
         control.inBackground(() => {
             while (true) {
-                basic.pause(1000)
-                windMPH = numWindTurns
+                basic.pause(2000)
+                windMPH = numWindTurns / 3 / 150 / 2
                 numWindTurns = 0
             }
         })
