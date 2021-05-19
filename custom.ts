@@ -34,7 +34,7 @@ namespace CC2 {
     let windMPH = 0
     let numWindTurns = 0
     let windMonitorStarted = false
-    
+
 
 
     export enum Turn {
@@ -252,6 +252,8 @@ namespace CC2 {
     //% weight=22 blockGap=8 blockId="weatherbit_startWindMonitoring" block="start wind monitoring"
     export function startWindMonitoring(): void {
         if (windMonitorStarted) return;
+
+        pins.setPull(DigitalPin.P4, PinPullMode.PullNone)
 
         // Watch pin 4 for a high pulse and send an event
         pins.onPulsed(DigitalPin.P4, PulseValue.High, () => {
