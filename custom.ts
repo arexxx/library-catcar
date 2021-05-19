@@ -272,7 +272,7 @@ namespace CC2 {
         control.inBackground(() => {
             while (true) {
                 basic.pause(2000)
-                windMPH = numWindTurns / 3 / 150 / 2
+                windMPH = numWindTurns / (3 * 150 * 2)
                 numWindTurns = 0
             }
         })
