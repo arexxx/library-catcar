@@ -227,4 +227,52 @@ namespace CC2 {
     }
 
 
+
+
+
+    /**
+    * blablabla
+    */
+    //% weight=21 blockGap=8 blockId="weatherbit_windSpeed" block="wind speed"
+    export function windSpeed(): number {
+        startWindMonitoring();
+
+        return windMPH
+    }
+
+    /**
+    * Sets up an event on pin 4 pulse high and event handler to increment
+    * numWindTurns on said event.  Starts background service to reset
+    * numWindTurns every 1 seconds and calculate MPH.
+    */
+    //% weight=22 blockGap=8 blockId="weatherbit_startWindMonitoring" block="start wind monitoring"
+    export function startWindMonitoring(): void {
+        if (windMonitorStarted) return;
+
+        // Watch pin 4 for a high pulse and send an event
+        pins.onPulsed(DigitalPin.P4, PulseValue.High, () => {
+            control.raiseEvent(
+                EventBusSource.MICROBIT_ID_IO_P4,
+                EventBusValue.MICROBIT_PIN_EVT_RISE
+            )
+        })
+
+        // Register event handler for a pin 4 high pulse
+        control.onEvent(EventBusSource.MICROBIT_ID_IO_P4, EventBusValue.MICROBIT_PIN_EVT_RISE, () => {
+            numWindTurns++
+        })
+
+        // Update MPH value every 1 seconds
+        control.inBackground(() => {
+            while (true) {
+                basic.pause(1000)
+                windMPH = numWindTurns
+                numWindTurns = 0
+            }
+        })
+
+        windMonitorStarted = true;
+    }
+
+
 }
