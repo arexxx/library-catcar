@@ -237,7 +237,7 @@ namespace CC2 {
     /**
     * blablabla
     */
-    //% weight=21 blockGap=8 blockId="weatherbit_windSpeed" block="wind speed"
+    //% weight=21 blockGap=8 blockId="wheelSpeedRight" block="speed right"
     export function wheelSpeedRight(): number {
         startOdometrieMonitoring();
 
@@ -249,7 +249,7 @@ namespace CC2 {
     * numWindTurns on said event.  Starts background service to reset
     * numWindTurns every 1 seconds and calculate MPH.
     */
-    //% weight=22 blockGap=8 blockId="weatherbit_startWindMonitoring" block="start wind monitoring"
+    //% weight=22 blockGap=8 blockId="startOdometrieMonitoring" block="start odometrie"
     export function startOdometrieMonitoring(): void {
         if (odometrieMonitorStarted) return;
 
