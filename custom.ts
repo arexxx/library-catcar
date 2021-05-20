@@ -265,7 +265,7 @@ namespace CC2 {
         if (odometrieMonitorStarted) return;
 
         pins.setPull(DigitalPin.P4, PinPullMode.PullNone)
-        pins.setPull(DigitalPin.P5, PinPullMode.PullNone)
+        pins.setPull(DigitalPin.P5, PinPullMode.PullDown)
 
         // Watch pin 4 for a high pulse and send an event
         pins.onPulsed(DigitalPin.P4, PulseValue.High, () => {
