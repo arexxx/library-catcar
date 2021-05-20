@@ -32,7 +32,9 @@ namespace CC2 {
     const channel0OffStepHighByte = 0x09 // LED0_OFF_H
 
     let speedRight: number = 0
-    let numRotorTurns: number = 0
+    let speedLeft: number = 0
+    let numRotorTurnsRight: number = 0
+    let numRotorTurnsLeft: number = 0
     let odometrieMonitorStarted = false
 
 
@@ -240,9 +242,18 @@ namespace CC2 {
     //% weight=21 blockGap=8 blockId="wheelSpeedRight" block="speed right"
     export function wheelSpeedRight(): number {
         startOdometrieMonitoring();
-
         return speedRight
     }
+
+    /**
+    * blablabla
+    */
+    //% weight=21 blockGap=8 blockId="wheelSpeedRight" block="speed left"
+    export function wheelSpeedLeft(): number {
+        startOdometrieMonitoring();
+        return speedLeft
+    }
+
 
     /**
     * Sets up an event on pin 4 pulse high and event handler to increment
@@ -254,6 +265,7 @@ namespace CC2 {
         if (odometrieMonitorStarted) return;
 
         pins.setPull(DigitalPin.P4, PinPullMode.PullNone)
+        pins.setPull(DigitalPin.P5, PinPullMode.PullNone)
 
         // Watch pin 4 for a high pulse and send an event
         pins.onPulsed(DigitalPin.P4, PulseValue.High, () => {
@@ -263,17 +275,37 @@ namespace CC2 {
             )
         })
 
+        pins.onPulsed(DigitalPin.P5, PulseValue.High, () => {
+            control.raiseEvent(
+                EventBusSource.MICROBIT_ID_IO_P5,
+                EventBusValue.MICROBIT_PIN_EVT_RISE
+            )
+        })
+
         // Register event handler for a pin 4 high pulse
         control.onEvent(EventBusSource.MICROBIT_ID_IO_P4, EventBusValue.MICROBIT_PIN_EVT_RISE, () => {
-            numRotorTurns++
+            numRotorTurnsRight++
+        })
+
+        // Register event handler for a pin 4 high pulse
+        control.onEvent(EventBusSource.MICROBIT_ID_IO_P5, EventBusValue.MICROBIT_PIN_EVT_RISE, () => {
+            numRotorTurnsLeft++
         })
 
         // Update MPH value every 1 seconds
         control.inBackground(() => {
             while (true) {
                 basic.pause(2000)
-                speedRight = numRotorTurns / (3 * 150 * 2)
-                numRotorTurns = 0
+                speedRight = numRotorTurnsRight / (3 * 150 * 2)
+                numRotorTurnsRight = 0
+            }
+        })
+
+        control.inBackground(() => {
+            while (true) {
+                basic.pause(2000)
+                speedLeft = numRotorTurnsLeft / (3 * 150 * 2)
+                numRotorTurnsLeft = 0
             }
         })
 
