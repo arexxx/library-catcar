@@ -31,9 +31,9 @@ namespace CC2 {
     const channel0OffStepLowByte = 0x08 // LED0_OFF_L
     const channel0OffStepHighByte = 0x09 // LED0_OFF_H
 
-    let windMPH: number = 0
-    let numWindTurns: number = 0
-    let windMonitorStarted = false
+    let speedRight: number = 0
+    let numRotorTurns: number = 0
+    let odometrieMonitorStarted = false
 
 
 
@@ -238,10 +238,10 @@ namespace CC2 {
     * blablabla
     */
     //% weight=21 blockGap=8 blockId="weatherbit_windSpeed" block="wind speed"
-    export function windSpeed(): number {
-        startWindMonitoring();
+    export function wheelSpeedRight(): number {
+        startOdometrieMonitoring();
 
-        return windMPH
+        return speedRight
     }
 
     /**
@@ -250,8 +250,8 @@ namespace CC2 {
     * numWindTurns every 1 seconds and calculate MPH.
     */
     //% weight=22 blockGap=8 blockId="weatherbit_startWindMonitoring" block="start wind monitoring"
-    export function startWindMonitoring(): void {
-        if (windMonitorStarted) return;
+    export function startOdometrieMonitoring(): void {
+        if (odometrieMonitorStarted) return;
 
         pins.setPull(DigitalPin.P4, PinPullMode.PullNone)
 
@@ -265,19 +265,19 @@ namespace CC2 {
 
         // Register event handler for a pin 4 high pulse
         control.onEvent(EventBusSource.MICROBIT_ID_IO_P4, EventBusValue.MICROBIT_PIN_EVT_RISE, () => {
-            numWindTurns++
+            numRotorTurns++
         })
 
         // Update MPH value every 1 seconds
         control.inBackground(() => {
             while (true) {
                 basic.pause(2000)
-                windMPH = numWindTurns / (3 * 150 * 2)
-                numWindTurns = 0
+                speedRight = numRotorTurns / (3 * 150 * 2)
+                numRotorTurns = 0
             }
         })
 
-        windMonitorStarted = true;
+        odometrieMonitorStarted = true;
     }
 
 
