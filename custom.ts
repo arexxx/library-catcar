@@ -248,7 +248,7 @@ namespace CC2 {
     /**
     * blablabla
     */
-    //% weight=21 blockGap=8 blockId="wheelSpeedRight" block="speed left"
+    //% weight=21 blockGap=8 blockId="wheelSpeedLeft" block="speed left"
     export function wheelSpeedLeft(): number {
         startOdometrieMonitoring();
         return speedLeft
