@@ -288,7 +288,7 @@ namespace CC2 {
         })
 
         // Register event handler for a pin 4 high pulse
-        control.onEvent(EventBusSource.MICROBIT_ID_IO_135, EventBusValue.MICROBIT_PIN_EVT_RISE, () => {
+        control.onEvent(EventBusSource.MICROBIT_ID_IO_P13, EventBusValue.MICROBIT_PIN_EVT_RISE, () => {
             numRotorTurnsLeft++
         })
 
