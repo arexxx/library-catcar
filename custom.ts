@@ -265,7 +265,7 @@ namespace CC2 {
         if (odometrieMonitorStarted) return;
 
         pins.setPull(DigitalPin.P4, PinPullMode.PullNone)
-        pins.setPull(DigitalPin.P5, PinPullMode.PullNone)
+        pins.setPull(DigitalPin.P13, PinPullMode.PullNone)
 
         // Watch pin 4 for a high pulse and send an event
         pins.onPulsed(DigitalPin.P4, PulseValue.High, () => {
@@ -275,9 +275,9 @@ namespace CC2 {
             )
         })
 
-        pins.onPulsed(DigitalPin.P5, PulseValue.High, () => {
+        pins.onPulsed(DigitalPin.P13, PulseValue.High, () => {
             control.raiseEvent(
-                EventBusSource.MICROBIT_ID_IO_P5,
+                EventBusSource.MICROBIT_ID_IO_P13,
                 EventBusValue.MICROBIT_PIN_EVT_RISE
             )
         })
@@ -288,7 +288,7 @@ namespace CC2 {
         })
 
         // Register event handler for a pin 4 high pulse
-        control.onEvent(EventBusSource.MICROBIT_ID_IO_P5, EventBusValue.MICROBIT_PIN_EVT_RISE, () => {
+        control.onEvent(EventBusSource.MICROBIT_ID_IO_135, EventBusValue.MICROBIT_PIN_EVT_RISE, () => {
             numRotorTurnsLeft++
         })
 
