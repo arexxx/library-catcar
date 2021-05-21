@@ -295,16 +295,16 @@ namespace CC2 {
         // Update MPH value every 1 seconds
         control.inBackground(() => {
             while (true) {
-                basic.pause(500)
-                speedRight = numRotorTurnsRight / (3 * 150 * 0.5)
+                basic.pause(1000)
+                speedRight = numRotorTurnsRight / (3 * 150)
                 numRotorTurnsRight = 0
             }
         })
 
         control.inBackground(() => {
             while (true) {
-                basic.pause(500)
-                speedLeft = numRotorTurnsLeft / (3 * 150 * 0.5)
+                basic.pause(1000)
+                speedLeft = numRotorTurnsLeft / (3 * 150)
                 numRotorTurnsLeft = 0
             }
         })
