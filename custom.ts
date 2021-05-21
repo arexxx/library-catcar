@@ -296,7 +296,7 @@ namespace CC2 {
         control.inBackground(() => {
             while (true) {
                 basic.pause(1000)
-                speedRight = numRotorTurnsRight / (2 * 150)
+                speedRight = numRotorTurnsRight / 150
                 numRotorTurnsRight = 0
             }
         })
@@ -304,7 +304,7 @@ namespace CC2 {
         control.inBackground(() => {
             while (true) {
                 basic.pause(1000)
-                speedLeft = numRotorTurnsLeft / (2 * 150)
+                speedLeft = numRotorTurnsLeft / 150
                 numRotorTurnsLeft = 0
             }
         })
