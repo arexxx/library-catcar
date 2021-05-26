@@ -242,7 +242,8 @@ namespace CC2 {
         writeloop(15, 0, 0)
       }
 
-      startOdometrieMonitoring()
+      startOdometrieMonitoring();
+      
     }
 
 
