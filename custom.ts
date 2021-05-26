@@ -31,14 +31,16 @@ namespace CC2 {
     const channel0OffStepLowByte = 0x08 // LED0_OFF_L
     const channel0OffStepHighByte = 0x09 // LED0_OFF_H
 
-    let speedRight: number = 0
-    let speedLeft: number = 0
+    let rotationsRight: number = 0
+    let rotationsLeft: number = 0
     let numRotorTurnsRight: number = 0
     let numRotorTurnsLeft: number = 0
     let odometrieMonitorStarted = false
 
-    const wheelCircumference = 138
+    const wheelCircumference = 138 // in mm
     const gearBoxRatio = 150
+    const speedLeft = 0
+    const speedRight = 0
 
 
 
@@ -222,20 +224,24 @@ namespace CC2 {
       const freqCal = (speed * 10 / wheelCircumference * gearBoxRatio)
       const speedSet = (((freqCal - 45) / 7.24) + 10)
       const pwm_spd = (speedSet * (chipResolution - 1)) / 100
+      speedLeft = speedRight = pwm_spd
+
 
       if(direction === 20) {
-        writeloop(12, 0, pwm_spd)
+        writeloop(12, 0, speedLeft)
         writeloop(13, 0, 0)
         writeloop(14, 0, 0)
-        writeloop(15, 0, pwm_spd)
+        writeloop(15, 0, speedRight)
       }
 
       if(direction === 21) {
         writeloop(12, 0, 0)
-        writeloop(13, 0, pwm_spd)
-        writeloop(14, 0, pwm_spd)
+        writeloop(13, 0, speedLeft)
+        writeloop(14, 0, speedRight)
         writeloop(15, 0, 0)
       }
+
+
     }
 
 
@@ -245,19 +251,19 @@ namespace CC2 {
     /**
     * blablabla
     */
-    //% weight=21 blockGap=8 blockId="wheelSpeedRight" block="speed right"
-    export function wheelSpeedRight(): number {
+    //% weight=21 blockGap=8 blockId="wheelrotationsRight" block="speed right"
+    export function wheelrotationsRight(): number {
         startOdometrieMonitoring();
-        return speedRight
+        return rotationsRight
     }
 
     /**
     * blablabla
     */
-    //% weight=21 blockGap=8 blockId="wheelSpeedLeft" block="speed left"
-    export function wheelSpeedLeft(): number {
+    //% weight=21 blockGap=8 blockId="wheelrotationsLeft" block="speed left"
+    export function wheelrotationsLeft(): number {
         startOdometrieMonitoring();
-        return speedLeft
+        return rotationsLeft
     }
 
 
@@ -290,28 +296,50 @@ namespace CC2 {
 
         // Register event handler for a pin 4 high pulse
         control.onEvent(EventBusSource.MICROBIT_ID_IO_P4, EventBusValue.MICROBIT_PIN_EVT_RISE, () => {
-            numRotorTurnsRight++
+            numRotorTurnsLeft++
         })
 
         // Register event handler for a pin 4 high pulse
         control.onEvent(EventBusSource.MICROBIT_ID_IO_P13, EventBusValue.MICROBIT_PIN_EVT_RISE, () => {
-            numRotorTurnsLeft++
+            numRotorTurnsRight++
         })
 
         // Update MPH value every 1 seconds
         control.inBackground(() => {
             while (true) {
-                basic.pause(1000)
-                speedRight = numRotorTurnsRight / 150
-                numRotorTurnsRight = 0
+                basic.pause(500)
+                rotationsLeft = numRotorTurnsLeft / gearBoxRatio / 2
+
+                if (rotationsLeft < speedSet) {
+                  speedLeft++
+                }
+
+                if (rotationsLeft > speedSet) {
+                  speedLeft--
+                }
+                writeloop(12, 0, speedLeft)
+                writeloop(13, 0, 0)
+
+                numRotorTurnsLeft = 0
             }
         })
 
         control.inBackground(() => {
             while (true) {
-                basic.pause(1000)
-                speedLeft = numRotorTurnsLeft / 150
-                numRotorTurnsLeft = 0
+                basic.pause(500)
+                rotationsRight = numRotorTurnsRight / gearBoxRatio / 2
+
+                if (rotationsRight < speedSet) {
+                  speedRight++
+                }
+
+                if (rotationsRight > speedSet) {
+                  speedRight--
+                }
+                writeloop(14, 0, 0)
+                writeloop(15, 0, speedRight)
+
+                numRotorTurnsRight = 0
             }
         })
 
