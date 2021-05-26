@@ -334,12 +334,12 @@ namespace CC2 {
                 rotationsRight = numRotorTurnsRight / gearBoxRatio * 2
 
                 if (rotationsRight <= speedSet) {
-                  speedRight + 40
+                  speedRight = speedRight + 40
                   writeloop(0, 0, 800)
                 }
 
                 if (rotationsRight >= speedSet) {
-                  speedRight - 40
+                  speedRight = speedRight - 40
                   writeloop(1, 0, 800)
                 }
                 writeloop(14, 0, 0)
