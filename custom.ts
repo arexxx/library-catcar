@@ -37,6 +37,10 @@ namespace CC2 {
     let numRotorTurnsLeft: number = 0
     let odometrieMonitorStarted = false
 
+    const kp: number = 3
+    const ki: number = 2
+    const kd: number = 1
+
 
 
     export enum Turn {
