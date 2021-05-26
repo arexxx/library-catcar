@@ -39,7 +39,7 @@ namespace CC2 {
 
     const wheelCircumference = 138 // in mm
     const gearBoxRatio = 150
-    let speedSet = 1000
+    let speedSet = 0
     let speedLeft = 0
     let speedRight = 0
 
@@ -312,15 +312,16 @@ namespace CC2 {
 
                 if (rotationsLeft < speedSet) {
                   speedLeft + 40
-                  writeloop(12, 0, speedLeft)
-                  writeloop(13, 0, 0)
+                  writeloop(0, 0, 800)
                 }
 
                 if (rotationsLeft > speedSet) {
                   speedLeft - 40
-                  writeloop(12, 0, speedLeft)
-                  writeloop(13, 0, 0)
+                  writeloop(1, 0, 800)
                 }
+                writeloop(12, 0, speedLeft)
+                writeloop(13, 0, 0)
+                writeloop(2, 0, 800)
 
                 numRotorTurnsLeft = 0
             }
