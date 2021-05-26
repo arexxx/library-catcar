@@ -248,7 +248,6 @@ namespace CC2 {
 
 
 
-
     /**
     * blablabla
     */
@@ -312,11 +311,11 @@ namespace CC2 {
                 rotationsLeft = numRotorTurnsLeft / gearBoxRatio / 2
 
                 if (rotationsLeft < speedSet) {
-                  speedLeft++
+                  speedLeft + 1
                 }
 
                 if (rotationsLeft > speedSet) {
-                  speedLeft--
+                  speedLeft - 1
                 }
                 writeloop(12, 0, speedLeft)
                 writeloop(13, 0, 0)
