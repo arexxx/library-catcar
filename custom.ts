@@ -212,14 +212,15 @@ namespace CC2 {
     /**
     * rijden op snelheid
     * @param direction kiezen tussen links en rechts draaien
-    * @param speed snelheid van de motor in cm/s, eg:10
+    * @param speed snelheid van de motor in cm/s min:5 max:20 cm/s, eg:10
     *
     */
     //% block="rijden %direction met snelheid %speed cm/s"
     export function rijdensnelheid(direction: Directions = 20, speed: number): void {
       direction = Math.max(20, Math.min(21, direction))
+      speed = Math.max(5, Math.min(20, speed))
       const freqCal = (speed * 10 / wheelCircumference * gearBoxRatio)
-      const speedSet = ((freqCal - 45) / 7.24 + 10)
+      const speedSet = (((freqCal - 45) / 7.24) + 10)
       const pwm_spd = (speedSet * (chipResolution - 1)) / 100
 
       if(direction === 20) {
