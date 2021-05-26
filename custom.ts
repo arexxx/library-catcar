@@ -39,8 +39,9 @@ namespace CC2 {
 
     const wheelCircumference = 138 // in mm
     const gearBoxRatio = 150
-    const speedLeft = 0
-    const speedRight = 0
+    let speedSet = 0
+    let speedLeft = 0
+    let speedRight = 0
 
 
 
@@ -222,7 +223,7 @@ namespace CC2 {
       direction = Math.max(20, Math.min(21, direction))
       speed = Math.max(5, Math.min(20, speed))
       const freqCal = (speed * 10 / wheelCircumference * gearBoxRatio)
-      const speedSet = (((freqCal - 45) / 7.24) + 10)
+      speedSet = (((freqCal - 45) / 7.24) + 10)
       const pwm_spd = (speedSet * (chipResolution - 1)) / 100
       speedLeft = speedRight = pwm_spd
 
