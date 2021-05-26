@@ -296,32 +296,29 @@ namespace CC2 {
 
         // Register event handler for a pin 4 high pulse
         control.onEvent(EventBusSource.MICROBIT_ID_IO_P4, EventBusValue.MICROBIT_PIN_EVT_RISE, () => {
-            numRotorTurnsLeft++
-        })
-
-        // Register event handler for a pin 4 high pulse
-        control.onEvent(EventBusSource.MICROBIT_ID_IO_P13, EventBusValue.MICROBIT_PIN_EVT_RISE, () => {
             numRotorTurnsRight++
         })
 
-        // Update MPH value every 1 seconds
+        // Register event handler for a pin 13 high pulse
+        control.onEvent(EventBusSource.MICROBIT_ID_IO_P13, EventBusValue.MICROBIT_PIN_EVT_RISE, () => {
+            numRotorTurnsLeft++
+        })
+
+        // Update value every 1 seconds
         control.inBackground(() => {
             while (true) {
                 basic.pause(500)
-                rotationsLeft = numRotorTurnsLeft / gearBoxRatio / 2
+                rotationsLeft = numRotorTurnsLeft / gearBoxRatio * 2
 
                 if (rotationsLeft < speedSet) {
                   speedLeft + 40
-                  writeloop(0, 0, 800)
                 }
 
                 if (rotationsLeft > speedSet) {
                   speedLeft - 40
-                  writeloop(1, 0, 800)
                 }
                 writeloop(12, 0, speedLeft)
                 writeloop(13, 0, 0)
-                writeloop(2, 0, 800)
 
                 numRotorTurnsLeft = 0
             }
@@ -329,18 +326,25 @@ namespace CC2 {
 
         control.inBackground(() => {
             while (true) {
-                basic.pause(500)
-                rotationsRight = numRotorTurnsRight / gearBoxRatio / 2
+                basic.pause(250)
+                writeloop(0, 0, 0)
+                writeloop(1, 0, 0)
+                writeloop(2, 0, 0)
+                basic.pause(250)
+                rotationsRight = numRotorTurnsRight / gearBoxRatio * 2
 
-                if (rotationsRight < speedSet) {
+                if (rotationsRight <= speedSet) {
                   speedRight + 40
+                  writeloop(0, 0, 800)
                 }
 
-                if (rotationsRight > speedSet) {
+                if (rotationsRight >= speedSet) {
                   speedRight - 40
+                  writeloop(1, 0, 800)
                 }
                 writeloop(14, 0, 0)
                 writeloop(15, 0, speedRight)
+                writeloop(2, 0, 800)
 
                 numRotorTurnsRight = 0
             }
