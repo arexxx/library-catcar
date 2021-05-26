@@ -241,9 +241,8 @@ namespace CC2 {
         writeloop(14, 0, speedRight)
         writeloop(15, 0, 0)
       }
-
       startOdometrieMonitoring();
-      
+
     }
 
 
@@ -312,11 +311,11 @@ namespace CC2 {
                 rotationsLeft = numRotorTurnsLeft / gearBoxRatio / 2
 
                 if (rotationsLeft < speedSet) {
-                  speedLeft + 1
+                  speedLeft + 40
                 }
 
                 if (rotationsLeft > speedSet) {
-                  speedLeft - 1
+                  speedLeft - 40
                 }
                 writeloop(12, 0, speedLeft)
                 writeloop(13, 0, 0)
@@ -331,11 +330,11 @@ namespace CC2 {
                 rotationsRight = numRotorTurnsRight / gearBoxRatio / 2
 
                 if (rotationsRight < speedSet) {
-                  speedRight + 1
+                  speedRight + 40
                 }
 
                 if (rotationsRight > speedSet) {
-                  speedRight - 1
+                  speedRight - 40
                 }
                 writeloop(14, 0, 0)
                 writeloop(15, 0, speedRight)
