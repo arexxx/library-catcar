@@ -37,20 +37,19 @@ namespace CC2 {
     let numRotorTurnsLeft: number = 0
     let odometrieMonitorStarted = false
 
-    const kp: number = 3
-    const ki: number = 2
-    const kd: number = 1
+    const wheelCircumference = 138
+    const gearBoxRatio = 150
 
 
 
     export enum Turn {
-      links = 1,
-      rechts = 2,
+      links = 10,
+      rechts = 11,
     }
 
     export enum Directions {
-      voorwaards = 5,
-      achterwaards = 6,
+      voorwaards = 20,
+      achterwaards = 21,
     }
 
 
@@ -161,18 +160,18 @@ namespace CC2 {
     * @param speed snelheid van de motor in %, eg:0-100
     */
     //% block="Draai %turning met snelheid %speed procent"
-    export function draaien(turning: Turn = 1, speed: number): void {
-      turning = Math.max(1, Math.min(2, turning))
+    export function draaien(turning: Turn = 10, speed: number): void {
+      turning = Math.max(10, Math.min(11, turning))
       const pwm_spd = (speed * (chipResolution - 1)) / 100
 
-      if(turning === 1) {
+      if(turning === 10) {
         writeloop(12, 0, 0)
         writeloop(13, 0, pwm_spd)
         writeloop(14, 0, 0)
         writeloop(15, 0, pwm_spd)
       }
 
-      if(turning === 2) {
+      if(turning === 11) {
         writeloop(12, 0, pwm_spd)
         writeloop(13, 0, 0)
         writeloop(14, 0, pwm_spd)
@@ -188,18 +187,18 @@ namespace CC2 {
     *
     */
     //% block="rijden %direction met snelheid %speed procent"
-    export function rijden(direction: Directions = 5, speed: number): void {
-      direction = Math.max(5, Math.min(6, direction))
+    export function rijden(direction: Directions = 20, speed: number): void {
+      direction = Math.max(20, Math.min(21, direction))
       const pwm_spd = (speed * (chipResolution - 1)) / 100
 
-      if(direction === 5) {
+      if(direction === 20) {
         writeloop(12, 0, pwm_spd)
         writeloop(13, 0, 0)
         writeloop(14, 0, 0)
         writeloop(15, 0, pwm_spd)
       }
 
-      if(direction === 6) {
+      if(direction === 21) {
         writeloop(12, 0, 0)
         writeloop(13, 0, pwm_spd)
         writeloop(14, 0, pwm_spd)
@@ -213,22 +212,24 @@ namespace CC2 {
     /**
     * rijden op snelheid
     * @param direction kiezen tussen links en rechts draaien
-    * @param speed snelheid van de motor in %, eg:0-100
+    * @param speed snelheid van de motor in cm/s, eg:10
     *
     */
-    //% block="rijden %direction met snelheid %speed m/s"
-    export function rijdensnelheid(direction: Directions = 5, speed: number): void {
-      direction = Math.max(5, Math.min(6, direction))
-      const pwm_spd = (speed * (chipResolution - 1)) / 100
+    //% block="rijden %direction met snelheid %speed cm/s"
+    export function rijdensnelheid(direction: Directions = 20, speed: number): void {
+      direction = Math.max(20, Math.min(21, direction))
+      const freqCal = (speed * 10 / wheelCircumference * gearBoxRatio)
+      const speedSet = ((freqCal - 45) / 7.24 + 10)
+      const pwm_spd = (speedSet * (chipResolution - 1)) / 100
 
-      if(direction === 5) {
+      if(direction === 20) {
         writeloop(12, 0, pwm_spd)
         writeloop(13, 0, 0)
         writeloop(14, 0, 0)
         writeloop(15, 0, pwm_spd)
       }
 
-      if(direction === 6) {
+      if(direction === 21) {
         writeloop(12, 0, 0)
         writeloop(13, 0, pwm_spd)
         writeloop(14, 0, pwm_spd)
