@@ -212,6 +212,19 @@ namespace CC2 {
     }
 
 
+    /**
+    * blablablabla
+    *
+    */
+    //% block="stoppen met rijden"
+    export function stoppenrijden(): void {
+      writeloop(12, 0, 0)
+      writeloop(13, 0, 0)
+      writeloop(14, 0, 0)
+      writeloop(15, 0, 0)
+    }
+
+
 
 
     /**
