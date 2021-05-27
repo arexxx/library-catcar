@@ -226,30 +226,29 @@ namespace CC2 {
       speed = Math.max(5, Math.min(20, speed))
 
       if (speed != setspeedloop){
+        pins.setPull(DigitalPin.P4, PinPullMode.PullNone)
+        pins.setPull(DigitalPin.P13, PinPullMode.PullNone)
+
         setspeedloop = speed;
         target_rps_rotor = (speed * 10 / wheelCircumference * gearBoxRatio)
         targetSpeed = (((target_rps_rotor - 45) / 7.24) + 10)
         const pca_spd_value = (targetSpeed * (chipResolution - 1)) / 100
         speedLeft = speedRight = pca_spd_value
+
+        if(direction === 20) {
+          writeloop(12, 0, speedLeft)
+          writeloop(13, 0, 0)
+          writeloop(14, 0, 0)
+          writeloop(15, 0, speedRight)
+        }
+
+        if(direction === 21) {
+          writeloop(12, 0, 0)
+          writeloop(13, 0, speedLeft)
+          writeloop(14, 0, speedRight)
+          writeloop(15, 0, 0)
+        }
       }
-
-      if(direction === 20) {
-        writeloop(12, 0, speedLeft)
-        writeloop(13, 0, 0)
-        writeloop(14, 0, 0)
-        writeloop(15, 0, speedRight)
-      }
-
-      if(direction === 21) {
-        writeloop(12, 0, 0)
-        writeloop(13, 0, speedLeft)
-        writeloop(14, 0, speedRight)
-        writeloop(15, 0, 0)
-      }
-
-
-      pins.setPull(DigitalPin.P4, PinPullMode.PullNone)
-      pins.setPull(DigitalPin.P13, PinPullMode.PullNone)
 
       // Watch pin 4 for a high pulse and send an event
       pins.onPulsed(DigitalPin.P4, PulseValue.High, () => {
@@ -283,11 +282,11 @@ namespace CC2 {
           rotationsLeft = numRotorTurnsLeft
 
           if (rotationsLeft <= target_rps_rotor) {
-            speedLeft = speedLeft + 40
+            speedLeft = speedLeft + 20
           }
 
           if (rotationsLeft >= target_rps_rotor) {
-            speedLeft = speedLeft - 40
+            speedLeft = speedLeft - 20
           }
           numRotorTurnsLeft = 0
         }
@@ -299,15 +298,31 @@ namespace CC2 {
             rotationsRight = numRotorTurnsRight
 
             if (rotationsRight <= target_rps_rotor) {
-              speedRight = speedRight + 40
+              speedRight = speedRight + 20
             }
 
             if (rotationsRight >= target_rps_rotor) {
-              speedRight = speedRight - 40
+              speedRight = speedRight - 20
             }
             numRotorTurnsRight = 0
           }
       })
+
+      basic.pause(500)
+
+      if(direction === 20) {
+        writeloop(12, 0, speedLeft)
+        writeloop(13, 0, 0)
+        writeloop(14, 0, 0)
+        writeloop(15, 0, speedRight)
+      }
+
+      if(direction === 21) {
+        writeloop(12, 0, 0)
+        writeloop(13, 0, speedLeft)
+        writeloop(14, 0, speedRight)
+        writeloop(15, 0, 0)
+      }
     }
 
 
