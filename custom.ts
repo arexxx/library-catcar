@@ -263,10 +263,10 @@ namespace CC2 {
       rotationsLeft = wheelrotationsLeft();
       rotationsRight = wheelrotationsRight();
 
-      serial.writeline(rechts:)
+      serial.writeline(rechts)
       serial.writeNumber(rotationsRight)
 
-      serial.writeline(left:)
+      serial.writeline(left)
       serial.writeNumber(rotationsLeft)
 
 
@@ -276,7 +276,7 @@ namespace CC2 {
       if (rotationsRight >= target_rps_rotor) {
         speedRight = speedRight - 20
       }
-      
+
 
       if (rotationsLeft <= target_rps_rotor) {
         speedLeft = speedLeft + 20
