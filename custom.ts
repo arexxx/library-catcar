@@ -259,69 +259,8 @@ namespace CC2 {
           writeloop(15, 0, 0)
         }
       }
-
-      pins.setPull(DigitalPin.P4, PinPullMode.PullNone)
-      pins.setPull(DigitalPin.P13, PinPullMode.PullNone)
-
-      // Watch pin 4 for a high pulse and send an event
-      pins.onPulsed(DigitalPin.P4, PulseValue.High, () => {
-          control.raiseEvent(
-              EventBusSource.MICROBIT_ID_IO_P4,
-              EventBusValue.MICROBIT_PIN_EVT_RISE
-          )
-      })
-
-      pins.onPulsed(DigitalPin.P13, PulseValue.High, () => {
-          control.raiseEvent(
-              EventBusSource.MICROBIT_ID_IO_P13,
-              EventBusValue.MICROBIT_PIN_EVT_RISE
-          )
-      })
-
-      // Register event handler for a pin 4 high pulse
-      control.onEvent(EventBusSource.MICROBIT_ID_IO_P4, EventBusValue.MICROBIT_PIN_EVT_RISE, () => {
-          numRotorTurnsRight++
-      })
-
-      // Register event handler for a pin 13 high pulse
-      control.onEvent(EventBusSource.MICROBIT_ID_IO_P13, EventBusValue.MICROBIT_PIN_EVT_RISE, () => {
-          numRotorTurnsLeft++
-      })
-
-      // Update value every 1 seconds
-      control.inBackground(() => {
-        while (true) {
-          basic.pause(1000)
-          rotationsLeft = numRotorTurnsLeft
-
-          if (rotationsLeft <= target_rps_rotor) {
-            speedLeft = speedLeft + 20
-          }
-
-          if (rotationsLeft >= target_rps_rotor) {
-            speedLeft = speedLeft - 20
-          }
-          numRotorTurnsLeft = 0
-        }
-      })
-
-      control.inBackground(() => {
-          while (true) {
-            basic.pause(1000)
-            rotationsRight = numRotorTurnsRight
-
-            if (rotationsRight <= target_rps_rotor) {
-              speedRight = speedRight + 20
-            }
-
-            if (rotationsRight >= target_rps_rotor) {
-              speedRight = speedRight - 20
-            }
-            numRotorTurnsRight = 0
-          }
-      })
-
-      basic.pause(500)
+      startOdometrieMonitoring();
+      basic.pause(1000)
 
       if(direction === 20) {
         writeloop(12, 0, speedLeft)
@@ -344,26 +283,20 @@ namespace CC2 {
     * blablabla
     */
     //% weight=21 blockGap=8 blockId="wheelrotationsRight" block="speed right"
-
-    /*
     export function wheelrotationsRight(): number {
         startOdometrieMonitoring();
         return rotationsRight
     }
-    */
 
 
     /**
     * blablabla
     */
     //% weight=21 blockGap=8 blockId="wheelrotationsLeft" block="speed left"
-
-    /*
     export function wheelrotationsLeft(): number {
         startOdometrieMonitoring();
         return rotationsLeft
     }
-    */
 
 
     /**
@@ -372,8 +305,6 @@ namespace CC2 {
     * numWindTurns every 1 seconds and calculate MPH.
     */
     //% weight=22 blockGap=8 blockId="startOdometrieMonitoring" block="start odometrie"
-
-    /*
     export function startOdometrieMonitoring(): void {
       if (odometrieMonitorStarted) return;
 
@@ -410,20 +341,35 @@ namespace CC2 {
           while (true) {
             basic.pause(1000)
             rotationsLeft = numRotorTurnsLeft
+
+            if (rotationsLeft <= target_rps_rotor) {
+              speedLeft = speedLeft + 20
+            }
+
+            if (rotationsLeft >= target_rps_rotor) {
+              speedLeft = speedLeft - 20
+            }
             numRotorTurnsLeft = 0
           }
         })
 
         control.inBackground(() => {
-          while (true) {
-            basic.pause(1000)
-            rotationsRight = numRotorTurnsRight
-            numRotorTurnsRight = 0
-          }
+            while (true) {
+              basic.pause(1000)
+              rotationsRight = numRotorTurnsRight
+
+              if (rotationsRight <= target_rps_rotor) {
+                speedRight = speedRight + 20
+              }
+
+              if (rotationsRight >= target_rps_rotor) {
+                speedRight = speedRight - 20
+              }
+              numRotorTurnsRight = 0
+            }
         })
 
         odometrieMonitorStarted = true;
     }
-    */
 
 }
