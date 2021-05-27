@@ -263,10 +263,10 @@ namespace CC2 {
       rotationsLeft = wheelrotationsLeft();
       rotationsRight = wheelrotationsRight();
 
-      serial.writeline(rechts)
+      serial.writeLine("rechts:")
       serial.writeNumber(rotationsRight)
 
-      serial.writeline(left)
+      serial.writeline("left:")
       serial.writeNumber(rotationsLeft)
 
 
