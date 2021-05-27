@@ -239,9 +239,6 @@ namespace CC2 {
       speed = Math.max(5, Math.min(20, speed))
 
       if (speed != setspeedloop){
-        pins.setPull(DigitalPin.P4, PinPullMode.PullNone)
-        pins.setPull(DigitalPin.P13, PinPullMode.PullNone)
-
         setspeedloop = speed;
         target_rps_rotor = (speed * 10 / wheelCircumference * gearBoxRatio)
         targetSpeed = (((target_rps_rotor - 45) / 7.24) + 10)
@@ -262,6 +259,9 @@ namespace CC2 {
           writeloop(15, 0, 0)
         }
       }
+
+      pins.setPull(DigitalPin.P4, PinPullMode.PullNone)
+      pins.setPull(DigitalPin.P13, PinPullMode.PullNone)
 
       // Watch pin 4 for a high pulse and send an event
       pins.onPulsed(DigitalPin.P4, PulseValue.High, () => {
@@ -340,24 +340,30 @@ namespace CC2 {
 
 
 
-
     /**
     * blablabla
     */
     //% weight=21 blockGap=8 blockId="wheelrotationsRight" block="speed right"
+
+    /*
     export function wheelrotationsRight(): number {
         startOdometrieMonitoring();
         return rotationsRight
     }
+    */
+
 
     /**
     * blablabla
     */
     //% weight=21 blockGap=8 blockId="wheelrotationsLeft" block="speed left"
+
+    /*
     export function wheelrotationsLeft(): number {
         startOdometrieMonitoring();
         return rotationsLeft
     }
+    */
 
 
     /**
@@ -366,8 +372,10 @@ namespace CC2 {
     * numWindTurns every 1 seconds and calculate MPH.
     */
     //% weight=22 blockGap=8 blockId="startOdometrieMonitoring" block="start odometrie"
+
+    /*
     export function startOdometrieMonitoring(): void {
-        if (odometrieMonitorStarted) return;
+      if (odometrieMonitorStarted) return;
 
         pins.setPull(DigitalPin.P4, PinPullMode.PullNone)
         pins.setPull(DigitalPin.P13, PinPullMode.PullNone)
@@ -416,4 +424,6 @@ namespace CC2 {
 
         odometrieMonitorStarted = true;
     }
+    */
+
 }
