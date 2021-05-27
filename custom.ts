@@ -266,7 +266,7 @@ namespace CC2 {
       serial.writeLine("rechts:")
       serial.writeNumber(rotationsRight)
 
-      serial.writeline("left:")
+      serial.writeLine("left:")
       serial.writeNumber(rotationsLeft)
 
 
