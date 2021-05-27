@@ -259,7 +259,25 @@ namespace CC2 {
           writeloop(15, 0, 0)
         }
       }
-      startOdometrieMonitoring();
+
+      wheelrotationsLeft();
+      wheelrotationsRight();
+
+      if (rotationsLeft <= target_rps_rotor) {
+        speedLeft = speedLeft + 20
+      }
+      if (rotationsLeft >= target_rps_rotor) {
+        speedLeft = speedLeft - 20
+      }
+
+
+      if (rotationsRight <= target_rps_rotor) {
+        speedRight = speedRight + 20
+      }
+      if (rotationsRight >= target_rps_rotor) {
+        speedRight = speedRight - 20
+      }
+
       basic.pause(1000)
 
       if(direction === 20) {
