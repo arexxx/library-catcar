@@ -359,14 +359,6 @@ namespace CC2 {
           while (true) {
             basic.pause(1000)
             rotationsLeft = numRotorTurnsLeft
-
-            if (rotationsLeft <= target_rps_rotor) {
-              speedLeft = speedLeft + 20
-            }
-
-            if (rotationsLeft >= target_rps_rotor) {
-              speedLeft = speedLeft - 20
-            }
             numRotorTurnsLeft = 0
           }
         })
@@ -375,14 +367,6 @@ namespace CC2 {
             while (true) {
               basic.pause(1000)
               rotationsRight = numRotorTurnsRight
-
-              if (rotationsRight <= target_rps_rotor) {
-                speedRight = speedRight + 20
-              }
-
-              if (rotationsRight >= target_rps_rotor) {
-                speedRight = speedRight - 20
-              }
               numRotorTurnsRight = 0
             }
         })
