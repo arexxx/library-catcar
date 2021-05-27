@@ -39,7 +39,8 @@ namespace CC2 {
 
     const wheelCircumference = 138 // in mm
     const gearBoxRatio = 150
-    let speedSet = 0
+    let target_rps_rotor = 0
+    let targetSpeed = 0
     let speedLeft = 0
     let speedRight = 0
 
@@ -165,19 +166,19 @@ namespace CC2 {
     //% block="Draai %turning met snelheid %speed procent"
     export function draaien(turning: Turn = 10, speed: number): void {
       turning = Math.max(10, Math.min(11, turning))
-      const pwm_spd = (speed * (chipResolution - 1)) / 100
+      const pca_spd_value = (speed * (chipResolution - 1)) / 100
 
       if(turning === 10) {
         writeloop(12, 0, 0)
-        writeloop(13, 0, pwm_spd)
+        writeloop(13, 0, pca_spd_value)
         writeloop(14, 0, 0)
-        writeloop(15, 0, pwm_spd)
+        writeloop(15, 0, pca_spd_value)
       }
 
       if(turning === 11) {
-        writeloop(12, 0, pwm_spd)
+        writeloop(12, 0, pca_spd_value)
         writeloop(13, 0, 0)
-        writeloop(14, 0, pwm_spd)
+        writeloop(14, 0, pca_spd_value)
         writeloop(15, 0, 0)
       }
     }
@@ -192,19 +193,19 @@ namespace CC2 {
     //% block="rijden %direction met snelheid %speed procent"
     export function rijden(direction: Directions = 20, speed: number): void {
       direction = Math.max(20, Math.min(21, direction))
-      const pwm_spd = (speed * (chipResolution - 1)) / 100
+      const pca_spd_value = (speed * (chipResolution - 1)) / 100
 
       if(direction === 20) {
-        writeloop(12, 0, pwm_spd)
+        writeloop(12, 0, pca_spd_value)
         writeloop(13, 0, 0)
         writeloop(14, 0, 0)
-        writeloop(15, 0, pwm_spd)
+        writeloop(15, 0, pca_spd_value)
       }
 
       if(direction === 21) {
         writeloop(12, 0, 0)
-        writeloop(13, 0, pwm_spd)
-        writeloop(14, 0, pwm_spd)
+        writeloop(13, 0, pca_spd_value)
+        writeloop(14, 0, pca_spd_value)
         writeloop(15, 0, 0)
       }
     }
@@ -222,10 +223,10 @@ namespace CC2 {
     export function rijdensnelheid(direction: Directions = 20, speed: number): void {
       direction = Math.max(20, Math.min(21, direction))
       speed = Math.max(5, Math.min(20, speed))
-      const freqCal = (speed * 10 / wheelCircumference * gearBoxRatio)
-      speedSet = (((freqCal - 45) / 7.24) + 10)
-      const pwm_spd = (speedSet * (chipResolution - 1)) / 100
-      speedLeft = speedRight = pwm_spd
+      target_rps_rotor = (speed * 10 / wheelCircumference * gearBoxRatio)
+      targetSpeed = (((target_rps_rotor - 45) / 7.24) + 10)
+      const pca_spd_value = (targetSpeed * (chipResolution - 1)) / 100
+      speedLeft = speedRight = pca_spd_value
 
 
       if(direction === 20) {
@@ -241,6 +242,7 @@ namespace CC2 {
         writeloop(14, 0, speedRight)
         writeloop(15, 0, 0)
       }
+      odometrieMonitorStarted = true;
       startOdometrieMonitoring();
 
     }
@@ -307,18 +309,26 @@ namespace CC2 {
         // Update value every 1 seconds
         control.inBackground(() => {
             while (true) {
-                basic.pause(500)
-                rotationsLeft = numRotorTurnsLeft / gearBoxRatio * 2
 
-                if (rotationsLeft < speedSet) {
-                  speedLeft + 40
+                basic.pause(500)
+                writeloop(6, 0, 0)
+                writeloop(7, 0, 0)
+                writeloop(8, 0, 0)
+                basic.pause(500)
+                rotationsLeft = numRotorTurnsLeft
+
+                if (rotationsLeft <= target_rps_rotor) {
+                  speedLeft = speedLeft + 40
+                  writeloop(6, 0, 2000)
                 }
 
-                if (rotationsLeft > speedSet) {
-                  speedLeft - 40
+                if (rotationsLeft >= target_rps_rotor) {
+                  speedLeft = speedLeft - 40
+                  writeloop(7, 0, 2000)
                 }
                 writeloop(12, 0, speedLeft)
                 writeloop(13, 0, 0)
+                writeloop(8, 0, 2000)
 
                 numRotorTurnsLeft = 0
             }
@@ -326,19 +336,19 @@ namespace CC2 {
 
         control.inBackground(() => {
             while (true) {
-                basic.pause(250)
+                basic.pause(500)
                 writeloop(0, 0, 0)
                 writeloop(1, 0, 0)
                 writeloop(2, 0, 0)
-                basic.pause(250)
-                rotationsRight = numRotorTurnsRight / gearBoxRatio * 2
+                basic.pause(500)
+                rotationsRight = numRotorTurnsRight
 
-                if (rotationsRight <= speedSet) {
+                if (rotationsRight <= target_rps_rotor) {
                   speedRight = speedRight + 40
                   writeloop(0, 0, 800)
                 }
 
-                if (rotationsRight >= speedSet) {
+                if (rotationsRight >= target_rps_rotor) {
                   speedRight = speedRight - 40
                   writeloop(1, 0, 800)
                 }
