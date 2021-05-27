@@ -223,11 +223,14 @@ namespace CC2 {
     export function rijdensnelheid(direction: Directions = 20, speed: number): void {
       direction = Math.max(20, Math.min(21, direction))
       speed = Math.max(5, Math.min(20, speed))
-      target_rps_rotor = (speed * 10 / wheelCircumference * gearBoxRatio)
-      targetSpeed = (((target_rps_rotor - 45) / 7.24) + 10)
-      const pca_spd_value = (targetSpeed * (chipResolution - 1)) / 100
-      speedLeft = speedRight = pca_spd_value
 
+      if (speed != setspeedloop){
+        let setspeedloop = speed;
+        target_rps_rotor = (speed * 10 / wheelCircumference * gearBoxRatio)
+        targetSpeed = (((target_rps_rotor - 45) / 7.24) + 10)
+        const pca_spd_value = (targetSpeed * (chipResolution - 1)) / 100
+        speedLeft = speedRight = pca_spd_value
+      }
 
       if(direction === 20) {
         writeloop(12, 0, speedLeft)
@@ -242,9 +245,68 @@ namespace CC2 {
         writeloop(14, 0, speedRight)
         writeloop(15, 0, 0)
       }
-      odometrieMonitorStarted = true;
-      startOdometrieMonitoring();
 
+
+      pins.setPull(DigitalPin.P4, PinPullMode.PullNone)
+      pins.setPull(DigitalPin.P13, PinPullMode.PullNone)
+
+      // Watch pin 4 for a high pulse and send an event
+      pins.onPulsed(DigitalPin.P4, PulseValue.High, () => {
+          control.raiseEvent(
+              EventBusSource.MICROBIT_ID_IO_P4,
+              EventBusValue.MICROBIT_PIN_EVT_RISE
+          )
+      })
+
+      pins.onPulsed(DigitalPin.P13, PulseValue.High, () => {
+          control.raiseEvent(
+              EventBusSource.MICROBIT_ID_IO_P13,
+              EventBusValue.MICROBIT_PIN_EVT_RISE
+          )
+      })
+
+      // Register event handler for a pin 4 high pulse
+      control.onEvent(EventBusSource.MICROBIT_ID_IO_P4, EventBusValue.MICROBIT_PIN_EVT_RISE, () => {
+          numRotorTurnsRight++
+      })
+
+      // Register event handler for a pin 13 high pulse
+      control.onEvent(EventBusSource.MICROBIT_ID_IO_P13, EventBusValue.MICROBIT_PIN_EVT_RISE, () => {
+          numRotorTurnsLeft++
+      })
+
+      // Update value every 1 seconds
+      control.inBackground(() => {
+        while (true) {
+          basic.pause(1000)
+          rotationsLeft = numRotorTurnsLeft
+
+          if (rotationsLeft <= target_rps_rotor) {
+            speedLeft = speedLeft + 40
+          }
+
+          if (rotationsLeft >= target_rps_rotor) {
+            speedLeft = speedLeft - 40
+          }
+          numRotorTurnsLeft = 0
+        }
+      })
+
+      control.inBackground(() => {
+          while (true) {
+            basic.pause(1000)
+            rotationsRight = numRotorTurnsRight
+
+            if (rotationsRight <= target_rps_rotor) {
+              speedRight = speedRight + 40
+            }
+
+            if (rotationsRight >= target_rps_rotor) {
+              speedRight = speedRight - 40
+            }
+            numRotorTurnsRight = 0
+          }
+      })
     }
 
 
@@ -308,56 +370,19 @@ namespace CC2 {
 
         // Update value every 1 seconds
         control.inBackground(() => {
-            while (true) {
-
-                basic.pause(500)
-                writeloop(6, 0, 0)
-                writeloop(7, 0, 0)
-                writeloop(8, 0, 0)
-                basic.pause(500)
-                rotationsLeft = numRotorTurnsLeft
-
-                if (rotationsLeft <= target_rps_rotor) {
-                  speedLeft = speedLeft + 40
-                  writeloop(6, 0, 2000)
-                }
-
-                if (rotationsLeft >= target_rps_rotor) {
-                  speedLeft = speedLeft - 40
-                  writeloop(7, 0, 2000)
-                }
-                writeloop(12, 0, speedLeft)
-                writeloop(13, 0, 0)
-                writeloop(8, 0, 2000)
-
-                numRotorTurnsLeft = 0
-            }
+          while (true) {
+            basic.pause(1000)
+            rotationsLeft = numRotorTurnsLeft
+            numRotorTurnsLeft = 0
+          }
         })
 
         control.inBackground(() => {
-            while (true) {
-                basic.pause(500)
-                writeloop(0, 0, 0)
-                writeloop(1, 0, 0)
-                writeloop(2, 0, 0)
-                basic.pause(500)
-                rotationsRight = numRotorTurnsRight
-
-                if (rotationsRight <= target_rps_rotor) {
-                  speedRight = speedRight + 40
-                  writeloop(0, 0, 800)
-                }
-
-                if (rotationsRight >= target_rps_rotor) {
-                  speedRight = speedRight - 40
-                  writeloop(1, 0, 800)
-                }
-                writeloop(14, 0, 0)
-                writeloop(15, 0, speedRight)
-                writeloop(2, 0, 800)
-
-                numRotorTurnsRight = 0
-            }
+          while (true) {
+            basic.pause(1000)
+            rotationsRight = numRotorTurnsRight
+            numRotorTurnsRight = 0
+          }
         })
 
         odometrieMonitorStarted = true;
