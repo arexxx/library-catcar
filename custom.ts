@@ -265,9 +265,11 @@ namespace CC2 {
 
       if (rotationsLeft <= target_rps_rotor) {
         speedLeft = speedLeft + 20
+        writeloop(0, 0, 50)
       }
       if (rotationsLeft >= target_rps_rotor) {
         speedLeft = speedLeft - 20
+        writeloop(1, 0, 50)
       }
 
 
