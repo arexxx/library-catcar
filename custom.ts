@@ -41,6 +41,7 @@ namespace CC2 {
     const gearBoxRatio = 150
     let target_rps_rotor = 0
     let targetSpeed = 0
+    let setspeedloop = 0
     let speedLeft = 0
     let speedRight = 0
 
@@ -225,7 +226,7 @@ namespace CC2 {
       speed = Math.max(5, Math.min(20, speed))
 
       if (speed != setspeedloop){
-        let setspeedloop = speed;
+        setspeedloop = speed;
         target_rps_rotor = (speed * 10 / wheelCircumference * gearBoxRatio)
         targetSpeed = (((target_rps_rotor - 45) / 7.24) + 10)
         const pca_spd_value = (targetSpeed * (chipResolution - 1)) / 100
@@ -387,6 +388,4 @@ namespace CC2 {
 
         odometrieMonitorStarted = true;
     }
-
-
 }
