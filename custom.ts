@@ -2,7 +2,7 @@
  * PCA9685
  */
 //% weight=100 color=#0fbc11 icon=""
-namespace CC2 {
+namespace CatCar {
 
     const chip_address = 65
 
@@ -112,6 +112,8 @@ namespace CC2 {
     }
 
 
+
+
     /**
      * Used to set the duty cycle (0-100) of a given led connected to the PCA9685
      * @param frontred, eg:0-100
@@ -154,6 +156,31 @@ namespace CC2 {
         const pwm_bry = (backRyellow * (chipResolution - 1)) / 100
         writeloop(10, 0, pwm_bry)
     }
+
+
+    /**
+     * Used to set the duty cycle (0-100) of a given led connected to the PCA9685
+     * @param midred, eg:0-100
+     * @param midyellow, eg:0-100
+     * @param midblue, eg:0-100
+     */
+    //% block="Maak midden leds: rood%midred geel%midyellow blauw%midblue"
+    export function maakMiddenLampen(midred: number, midyellow: number, midblue: number): void {
+        midred = Math.max(0, Math.min(100, backLyellow))
+        const pwm_mr = (midred * (chipResolution - 1)) / 100
+        writeloop(8, 0, pwm_mr)
+
+        midyellow = Math.max(0, Math.min(100, backred))
+        const pwm_my = (midyellow * (chipResolution - 1)) / 100
+        writeloop(7, 0, pwm_my)
+
+        midblue = Math.max(0, Math.min(100, backRyellow))
+        const pwm_mb = (midblue * (chipResolution - 1)) / 100
+        writeloop(6, 0, pwm_mb)
+    }
+
+
+    
 
 
 
