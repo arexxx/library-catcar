@@ -166,21 +166,21 @@ namespace CatCar {
      */
     //% block="Maak midden leds: rood%midred geel%midyellow blauw%midblue"
     export function maakMiddenLampen(midred: number, midyellow: number, midblue: number): void {
-        midred = Math.max(0, Math.min(100, backLyellow))
+        midred = Math.max(0, Math.min(100, midred))
         const pwm_mr = (midred * (chipResolution - 1)) / 100
         writeloop(8, 0, pwm_mr)
 
-        midyellow = Math.max(0, Math.min(100, backred))
+        midyellow = Math.max(0, Math.min(100, midyellow))
         const pwm_my = (midyellow * (chipResolution - 1)) / 100
         writeloop(7, 0, pwm_my)
 
-        midblue = Math.max(0, Math.min(100, backRyellow))
+        midblue = Math.max(0, Math.min(100, midblue))
         const pwm_mb = (midblue * (chipResolution - 1)) / 100
         writeloop(6, 0, pwm_mb)
     }
 
 
-    
+
 
 
 
