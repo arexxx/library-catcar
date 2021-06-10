@@ -94,7 +94,7 @@ namespace CatCar {
     /**
      * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs
      */
-    //% block weight=20
+    //% block weight=199
     export function resetLedsEnMotor(): void {
         const prescaler = (osc_clock / (pca_frequency * chipResolution)) - 1;
 
@@ -123,7 +123,7 @@ namespace CatCar {
      * @param frontgreen, eg:0-100
      * @param frontblue, eg:0-100
      */
-    //% block="Maak koplampen: Rood%frontred Groen%frontgreen Blauw%frontblue" weight=30
+    //% block="Maak koplampen: Rood%frontred Groen%frontgreen Blauw%frontblue" weight=189
     export function maakKoplampen(frontred: number, frontgreen: number, frontblue: number): void {
         frontred = Math.max(0, Math.min(100, frontred))
         const pwm_fr = (frontred * (chipResolution - 1)) / 100
@@ -145,7 +145,7 @@ namespace CatCar {
      * @param backLyellow, eg:0-100
      * @param backRyellow, eg:0-100
      */
-    //% block="Maak achterlampen: geel links%backLyellow rood%backred geel rechts%backRyellow" weight=31
+    //% block="Maak achterlampen: geel links%backLyellow rood%backred geel rechts%backRyellow" weight=188
     export function maakAchterlampen(backLyellow: number, backred: number, backRyellow: number): void {
         backLyellow = Math.max(0, Math.min(100, backLyellow))
         const pwm_bly = (backLyellow * (chipResolution - 1)) / 100
@@ -167,7 +167,7 @@ namespace CatCar {
      * @param midyellow, eg:0-100
      * @param midblue, eg:0-100
      */
-    //% block="Maak midden leds: rood%midred geel%midyellow blauw%midblue" weight=32
+    //% block="Maak midden leds: rood%midred geel%midyellow blauw%midblue" weight=187
     export function maakMiddenLeds(midred: number, midyellow: number, midblue: number): void {
         midred = Math.max(0, Math.min(100, midred))
         const pwm_mr = (midred * (chipResolution - 1)) / 100
@@ -192,7 +192,7 @@ namespace CatCar {
     * @param speed snelheid van de motor in %, eg:0-100
     *
     */
-    //% block="rijden %direction met snelheid %speed procent" weight=40
+    //% block="Rijden %direction met snelheid %speed procent" weight=179
     export function rijden(direction: Directions = 20, speed: number): void {
       direction = Math.max(20, Math.min(21, direction))
       const pca_spd_value = (speed * (chipResolution - 1)) / 100
@@ -219,7 +219,7 @@ namespace CatCar {
     * @param turning kiezen tussen links en rechts draaien
     * @param speed snelheid van de motor in %, eg:0-100
     */
-    //% block="Draai %turning met snelheid %speed procent" weight=41
+    //% block="Draai %turning met snelheid %speed procent" weight=178
     export function draaien(turning: Turn = 10, speed: number): void {
       turning = Math.max(10, Math.min(11, turning))
       const pca_spd_value = (speed * (chipResolution - 1)) / 100
@@ -245,7 +245,7 @@ namespace CatCar {
     * blablablabla
     *
     */
-    //% block="stoppen met rijden" weight=42
+    //% block="Stoppen met rijden" weight=177
     export function stoppenrijden(): void {
       writeloop(12, 0, 0)
       writeloop(13, 0, 0)
@@ -263,7 +263,7 @@ namespace CatCar {
     * @param speed snelheid van de motor in cm/s min:5 max:20 cm/s, eg:10
     *
     */
-    //% block="rijden %direction met snelheid %speed cm/s" weight=50
+    //% block="rijden %direction met snelheid %speed cm/s" weight=169
     export function rijdensnelheid(direction: Directions = 20, speed: number): void {
       direction = Math.max(20, Math.min(21, direction))
       speed = Math.max(5, Math.min(20, speed))
@@ -337,7 +337,7 @@ namespace CatCar {
     /**
     * blablabla
     */
-    //% blockId="wheelrotationsRight" block="speed right"
+    //% blockId="wheelrotationsRight" block="speed right" weight= 98
     export function wheelrotationsRight(): number {
         startOdometrieMonitoring();
         return rotationsRight
@@ -347,7 +347,7 @@ namespace CatCar {
     /**
     * blablabla
     */
-    //% blockId="wheelrotationsLeft" block="speed left"
+    //% blockId="wheelrotationsLeft" block="speed left" weight=97
     export function wheelrotationsLeft(): number {
         startOdometrieMonitoring();
         return rotationsLeft
@@ -359,7 +359,7 @@ namespace CatCar {
     * numWindTurns on said event.  Starts background service to reset
     * numWindTurns every 1 seconds and calculate MPH.
     */
-    //% blockId="startOdometrieMonitoring" block="start odometrie"
+    //% blockId="startOdometrieMonitoring" block="start odometrie" weight=99
     export function startOdometrieMonitoring(): void {
       if (odometrieMonitorStarted) return;
 
