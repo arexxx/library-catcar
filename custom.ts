@@ -341,14 +341,27 @@ namespace CatCar {
     */
     //% block="lees ultrasoon uit in %unit"
     //% weight=159
-    export function ultrasoon(unit: )
-
-
-
-
-
-
-
+    export function sonar(unit: RBPingUnit): number {
+      // send pulse
+      let trig = DigitalPin.P6
+      let echo = DigitalPin.P7
+      let maxCmDistance = 500
+      let d=10
+      pins.setPull(trig, PinPullMode.PullNone)
+      for (let x=0; x<10; x++) {
+        pins.digitalWritePin(trig, 0)
+        control.waitMicros(2)
+        pins.digitalWritePin(trig, 1)
+        control.waitMicros(10)
+        pins.digitalWritePin(trig, 0)
+        // read pulse
+        d = pins.pulseIn(echo, PulseValue.High, maxCmDistance)
+        if (d>0) {
+          break
+        }
+        RBPingUnit.Centimeters: return Math.round(d)
+      }
+    }
 
 
     //_____________________________________________________________________________________________________//
