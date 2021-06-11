@@ -357,7 +357,7 @@ namespace CatCar {
         // read pulse
         d = pins.pulseIn(echo, PulseValue.High, maxCmDistance)
         if (d>0) {
-          break
+          break;
         }
         d = Math.round(d);
         return d;
