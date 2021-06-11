@@ -341,7 +341,7 @@ namespace CatCar {
     */
     //% block="lees ultrasoon uit in %unit"
     //% weight=159
-    export function sonar(unit: RBPingUnit): number {
+    export function sonar(): number {
       // send pulse
       let trig = DigitalPin.P6
       let echo = DigitalPin.P7
