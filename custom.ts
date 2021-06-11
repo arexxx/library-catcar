@@ -343,6 +343,7 @@ namespace CatCar {
     //% weight=159
     export function sonar(): number {
       // send pulse
+      led.enable (false);
       let trig = DigitalPin.P6
       let echo = DigitalPin.P7
       let maxCmDistance = 500
