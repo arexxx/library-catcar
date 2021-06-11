@@ -359,7 +359,7 @@ namespace CatCar {
         if (d>0) {
           break
         }
-        RBPingUnit.Centimeters: return Math.round(d)
+        RBPingUnit.Centimeters: return Math.round(d);
       }
     }
 
