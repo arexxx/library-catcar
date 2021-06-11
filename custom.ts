@@ -355,12 +355,12 @@ namespace CatCar {
         control.waitMicros(10)
         pins.digitalWritePin(trig, 0)
         // read pulse
-        d = pins.pulseIn(echo, PulseValue.High, maxCmDistance)
-        if (d>0) break;
-
-        d = Math.round(d);
-        return d;
+        d = pins.pulseIn(echo, PulseValue.High, maxCmDistance);
+        if (d>0)
+          break;
       }
+      d = Math.round(d);
+      return d;
     }
 
 
