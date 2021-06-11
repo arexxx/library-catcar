@@ -339,7 +339,7 @@ namespace CatCar {
     /**
     * afstand meting via ultrasoon sensor
     */
-    //% block="lees ultrasoon uit in %unit"
+    //% block="afstand ultrasoon"
     //% weight=159
     export function sonar(): number {
       // send pulse
