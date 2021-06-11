@@ -359,7 +359,8 @@ namespace CatCar {
         if (d>0) {
           break
         }
-        return Math.round(d)
+        d = Math.round(d);
+        return d;
       }
     }
 
