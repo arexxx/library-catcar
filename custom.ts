@@ -265,6 +265,7 @@ namespace CatCar {
     */
     //% block="rijden %direction met snelheid %speed cm/s" weight=169
     export function rijdensnelheid(direction: Directions = 20, speed: number): void {
+      led.enable (false)
       direction = Math.max(20, Math.min(21, direction))
       speed = Math.max(5, Math.min(20, speed))
 
@@ -360,7 +361,7 @@ namespace CatCar {
         if (d>0)
           break;
       }
-      d = Math.round(d);
+      d = Math.round(d/58);
       return d;
     }
 
