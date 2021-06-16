@@ -302,21 +302,21 @@ namespace CatCar {
 
 
       if (rotationsRight <= target_rps_rotor) {
-        speedRight = speedRight + 20
+        speedRight = speedRight + 10
       }
       if (rotationsRight >= target_rps_rotor) {
-        speedRight = speedRight - 20
+        speedRight = speedRight - 10
       }
 
 
       if (rotationsLeft <= target_rps_rotor) {
-        speedLeft = speedLeft + 20
+        speedLeft = speedLeft + 10
       }
       if (rotationsLeft >= target_rps_rotor) {
-        speedLeft = speedLeft - 20
+        speedLeft = speedLeft - 10
       }
 
-      basic.pause(1000)
+      basic.pause(500)
 
       if(direction === 20) {
         writeloop(12, 0, speedLeft)
@@ -429,16 +429,16 @@ namespace CatCar {
         // Update value every 1 seconds
         control.inBackground(() => {
           while (true) {
-            basic.pause(1000)
-            rotationsLeft = numRotorTurnsLeft
+            basic.pause(500)
+            rotationsLeft = numRotorTurnsLeft * 2
             numRotorTurnsLeft = 0
           }
         })
 
         control.inBackground(() => {
             while (true) {
-              basic.pause(1000)
-              rotationsRight = numRotorTurnsRight
+              basic.pause(500)
+              rotationsRight = numRotorTurnsRight * 2
               numRotorTurnsRight = 0
             }
         })
