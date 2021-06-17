@@ -398,6 +398,7 @@ namespace CatCar {
     export function startOdometrieMonitoring(): void {
       if (odometrieMonitorStarted) return;
 
+        led.enable (false);
         pins.setPull(DigitalPin.P4, PinPullMode.PullNone)
         pins.setPull(DigitalPin.P13, PinPullMode.PullNone)
 
@@ -426,7 +427,7 @@ namespace CatCar {
             numRotorTurnsLeft++
         })
 
-        // Update value every 1 seconds
+        // Update value every 0.5 seconds
         control.inBackground(() => {
           while (true) {
             basic.pause(500)
