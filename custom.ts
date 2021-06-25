@@ -347,21 +347,21 @@ namespace CatCar {
       led.enable (false);
       let trig = DigitalPin.P6
       let echo = DigitalPin.P7
-      let maxCmDistance = 500
-      let d=10
+      let maxCmDistance = 23200
+
       pins.setPull(trig, PinPullMode.PullNone)
       for (let x=0; x<10; x++) {
         pins.digitalWritePin(trig, 0)
         control.waitMicros(2)
         pins.digitalWritePin(trig, 1)
-        control.waitMicros(10)
+        control.waitMicros(15)
         pins.digitalWritePin(trig, 0)
         // read pulse
-        d = pins.pulseIn(echo, PulseValue.High, maxCmDistance);
+        let d = pins.pulseIn(echo, PulseValue.High, maxCmDistance);
         if (d>0)
           break;
       }
-      d = Math.round(d/58);
+      d = Math.floor(d/58);
       return d;
     }
 
