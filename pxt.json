@@ -1,6 +1,6 @@
 {
     "name": "Arexx-CatCar",
-    "version": "0.5",
+    "version": "0.5.1",
     "description": "Library for the Arexx Cat Car",
     "dependencies": {
         "core": "*",
