@@ -8,11 +8,8 @@
         "neopixel": "github:microsoft/pxt-neopixel#v0.6.12"
     },
     "files": [
-        "main.blocks",
-        "main.ts",
-        "README.md",
-        "main.py",
-        "custom.ts"
+        "catcar.ts",
+        "README.md"
     ],
     "testFiles": [
         "test.ts"
