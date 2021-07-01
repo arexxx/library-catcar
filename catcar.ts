@@ -350,6 +350,7 @@ namespace CatCar {
       let maxCmDistance = 23200
 
       pins.setPull(trig, PinPullMode.PullNone)
+      let d
       for (let x=0; x<10; x++) {
         pins.digitalWritePin(trig, 0)
         control.waitMicros(2)
@@ -357,7 +358,7 @@ namespace CatCar {
         control.waitMicros(15)
         pins.digitalWritePin(trig, 0)
         // read pulse
-        let d = pins.pulseIn(echo, PulseValue.High, maxCmDistance);
+        d = pins.pulseIn(echo, PulseValue.High, maxCmDistance);
         if (d>0)
           break;
       }

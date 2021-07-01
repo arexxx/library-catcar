@@ -1,6 +1,6 @@
 {
     "name": "Arexx-CatCar",
-    "version":"0.5",
+    "version": "0.5",
     "description": "Library for the Arexx Cat Car",
     "dependencies": {
         "core": "*",
@@ -12,7 +12,7 @@
         "catcar.ts",
         "README.md"
     ],
-    "public":true,
+    "public": true,
     "supportedTargets": [
         "microbit"
     ],
