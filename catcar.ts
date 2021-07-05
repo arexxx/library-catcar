@@ -138,7 +138,7 @@ namespace CatCar {
 
 
     /**
-     * @brief koplampen aanzetten met een kleur
+     *  koplampen aanzetten met een kleur
      * @param frontred - Percentage Red in RGB value
      * @param frontgreen - Percentage Green in RGB value
      * @param frontblue - Percentage Blue in RGB value
@@ -162,7 +162,7 @@ namespace CatCar {
 
 
     /**
-     * @brief Set the back LEDs to a specific colour
+     *  Set the back LEDs to a specific colour
      * @param backred - Set the PWM percentage for the Red LEDs
      * @param backLyellow - Set the PWM percentage for the left yellow LED
      * @param backRyellow - Set the PWM percentage for the right yellow LED
@@ -190,7 +190,7 @@ namespace CatCar {
 
 
     /**
-     * @brief set the brightness of the LEDs on the center of the CatCar
+     *  set the brightness of the LEDs on the center of the CatCar
      * @param midred - Set percentage for the red LED
      * @param midyellow - Set percentage for the yellow LED
      * @param midblue - Set percentage for the blue LED
@@ -481,96 +481,7 @@ namespace CatCar {
 
 }
 
-
-
-/* ==========================================
-
-
-    OLD VERSION FROM CHINESE CAT CAR:
-
-
-==============================================*/
-
-/*
-Copyright (C): 2010-2019, Shenzhen Yahboom Tech
-modified from liusen
-load dependency
-"mbit": "file:../pxt-mbit"
-*/
-
-//% color="#87CEEB" weight=24 icon="\uf1b6"
-// namespace mbit_Sensor {
-
-
-//     export enum enIR {
-//         //% blockId="Get" block="detected"
-//         Get = 0,
-//         //% blockId="NoVoice" block="undetected"
-//         NoGet = 1
-//     }
-    
-
-
-//     function IR_send_38k() {
-//         for (let i: number = 0; i < 8; i++) {
-//             pins.digitalWritePin(DigitalPin.P9, 1);
-//             control.waitMicros(13);
-//             pins.digitalWritePin(DigitalPin.P9, 0);
-//             control.waitMicros(13);
-//         }
-//     }
-//     //% blockId=mbit_IR_Sensor block="IR_Sensor|pin %pin| |%value|obstacle"
-//     //% weight=100
-//     //% blockGap=10
-//     //% color="#87CEEB"
-//     //% name.fieldEditor="gridpicker" name.fieldOptions.columns=4
-//     export function IR_Sensor(pin: DigitalPin, value: enIR): boolean {
-
-//         pins.setPull(pin, PinPullMode.PullUp);
-//         //IR_send_38k();
-//         if (pins.digitalReadPin(pin) == value) {
-//             return true;
-//         }
-//         else {
-//             return false;
-//         }
-
-//     }
-
-//     //% blockId=mbit_IR_Send block="IR_Send|pin %pin"
-//     //% weight=100
-//     //% blockGap=10
-//     //% color="#87CEEB"
-//     //% name.fieldEditor="gridpicker" name.fieldOptions.columns=4
-//     export function IR_Send(pin: DigitalPin): void {
-
-        
-//         IR_send_38k();
-
-//     }
-   
-//     //% blockId=mbit_ultrasonic block="Ultrasonic|Trig %Trig|Echo %Echo"
-//     //% color="#87CEEB"
-//     //% weight=100
-//     //% blockGap=10
-//     //% name.fieldEditor="gridpicker" name.fieldOptions.columns=4
-//     export function Ultrasonic(Trig: DigitalPin, Echo: DigitalPin): number {
-
-//         // send pulse
-//         pins.setPull(Trig, PinPullMode.PullNone);
-//         pins.digitalWritePin(Trig, 0);
-//         control.waitMicros(2);
-//         pins.digitalWritePin(Trig, 1);
-//         control.waitMicros(15);
-//         pins.digitalWritePin(Trig, 0);
-
-//         // read pulse
-//         let d = pins.pulseIn(Echo, PulseValue.High, 23200);
-//         return  Math.floor(d / 58);
-//     }
-// }
-
-//% block = "mBit_robot version"
+//% block="mBit_robot version"
 //% color="#006400" weight=20 icon="\uf1b9"
 namespace mbit_Robot {
 
