@@ -1,16 +1,27 @@
-/**
- * PCA9685
- */
+/* =============================
+*   Arexx Engineering CatCar MakeCode library
+*
+*   By Dennis Goor and Sjors Smit
+*   July 2021
+*
+*   Free to use under MIT license
+**/
+
+
+//
 //% weight=100 color=#0fbc11 icon=""
 namespace CatCar {
 
-    const chip_address = 65
+    /**
+     * PCA9685 registers and adresses
+    */
+    const chip_address = 65      //I2C address
 
-    const chipResolution = 4096;
-    const PrescaleReg = 0xFE //the prescale register address
-    const PinRegDistance = 4
-    const osc_clock = 25000000
-    const pca_frequency = 200
+    const chipResolution = 4096; //chip has 12-bit resolution
+    const PrescaleReg = 0xFE     //the prescale register address
+    const PinRegDistance = 4    //
+    const osc_clock = 25000000  //SPI frequency
+    const pca_frequency = 200   //PWM output frequency
 
     const modeRegister1 = 0x00 // MODE1
     const modeRegister1Default = 0x01
@@ -31,6 +42,7 @@ namespace CatCar {
     const channel0OffStepLowByte = 0x08 // LED0_OFF_L
     const channel0OffStepHighByte = 0x09 // LED0_OFF_H
 
+    //Global variables for odometrie
     let rotationsRight: number = 0
     let rotationsLeft: number = 0
     let numRotorTurnsRight: number = 0
@@ -48,7 +60,7 @@ namespace CatCar {
     const degree_puls = 2.1
 
 
-
+    //Directional Enums
     export enum Turn {
       links = 10,
       rechts = 11,
@@ -62,7 +74,12 @@ namespace CatCar {
 
 //_____________________________________________________________________________________________________//
 
-
+    /**
+     * Write to the PCA I/O expander
+     * @param chip_address - the I2C address of the I/O expander
+     * @param register - The register to write to
+     * @param number - the value to write in the register
+     */
     function writePCA(chip_address: number, register: number, value: number): void {
         const buffer = pins.createBuffer(2)
         buffer[0] = register
@@ -70,12 +87,15 @@ namespace CatCar {
         pins.i2cWriteBuffer(chip_address, buffer, false)
     }
 
+    /**
+     * Write 
+     */
     function writeloop(pinNumber: number, onStep: number = 0, offStep: number = 2048): void {
-        pinNumber = Math.max(0, Math.min(15, pinNumber))
+        pinNumber = Math.constrain(pinNumber, 0, 15)
         const buffer = pins.createBuffer(2)
         const pinOffset = PinRegDistance * pinNumber
-        onStep = Math.max(0, Math.min(4095, onStep))
-        offStep = Math.max(0, Math.min(4095, offStep))
+        onStep = Math.constrain(onStep, 0, chipResolution-1)
+        offStep = Math.constrain(offStep, 0, chipResolution-1)
 
         // Low byte of onStep
         writePCA(chip_address, pinOffset + channel0OnStepLowByte, onStep & 0xFF)
@@ -118,12 +138,14 @@ namespace CatCar {
 
 
     /**
-     * Used to set the duty cycle (0-100) of a given led connected to the PCA9685
-     * @param frontred, eg:0-100
-     * @param frontgreen, eg:0-100
-     * @param frontblue, eg:0-100
+     * @brief koplampen aanzetten met een kleur
+     * @param frontred - Percentage Red in RGB value
+     * @param frontgreen - Percentage Green in RGB value
+     * @param frontblue - Percentage Blue in RGB value
      */
-    //% block="Maak koplampen: Rood%frontred Groen%frontgreen Blauw%frontblue" weight=189
+    //% block="Maak koplampen: Rood%frontred Groen%frontgreen Blauw%frontblue" 
+    //% weight=189
+    //% frontred.max=100 frontred.min=0 frontgreen.max=100 frontgreen.min=0 frontblue.max=100 frontblue.min=0 
     export function maakKoplampen(frontred: number, frontgreen: number, frontblue: number): void {
         frontred = Math.max(0, Math.min(100, frontred))
         const pwm_fr = (frontred * (chipResolution - 1)) / 100
@@ -140,44 +162,53 @@ namespace CatCar {
 
 
     /**
-     * Used to set the duty cycle (0-100) of a given led connected to the PCA9685
-     * @param backred, eg:0-100
-     * @param backLyellow, eg:0-100
-     * @param backRyellow, eg:0-100
+     * @brief Set the back LEDs to a specific colour
+     * @param backred - Set the PWM percentage for the Red LEDs
+     * @param backLyellow - Set the PWM percentage for the left yellow LED
+     * @param backRyellow - Set the PWM percentage for the right yellow LED
      */
     //% block="Maak achterlampen: geel links%backLyellow rood%backred geel rechts%backRyellow" weight=188
+    //% backred.min=0 backred.max=100
+    //% backLyellow.min=0 backLyellow.max=100
+    //% backRyellow.min=0 backRyellow.max=100
     export function maakAchterlampen(backLyellow: number, backred: number, backRyellow: number): void {
         backLyellow = Math.max(0, Math.min(100, backLyellow))
+        //Convert value from 0-100 to 0-4095 for PCA chip
         const pwm_bly = (backLyellow * (chipResolution - 1)) / 100
         writeloop(11, 0, pwm_bly)
 
         backred = Math.max(0, Math.min(100, backred))
+        //Convert value from 0-100 to 0-4095 for PCA chip
         const pwm_br = (backred * (chipResolution - 1)) / 100
         writeloop(9, 0, pwm_br)
 
         backRyellow = Math.max(0, Math.min(100, backRyellow))
+        //Convert value from 0-100 to 0-4095 for PCA chip
         const pwm_bry = (backRyellow * (chipResolution - 1)) / 100
         writeloop(10, 0, pwm_bry)
     }
 
 
     /**
-     * Used to set the duty cycle (0-100) of a given led connected to the PCA9685
-     * @param midred, eg:0-100
-     * @param midyellow, eg:0-100
-     * @param midblue, eg:0-100
+     * @brief set the brightness of the LEDs on the center of the CatCar
+     * @param midred - Set percentage for the red LED
+     * @param midyellow - Set percentage for the yellow LED
+     * @param midblue - Set percentage for the blue LED
      */
     //% block="Maak midden leds: rood%midred geel%midyellow blauw%midblue" weight=187
     export function maakMiddenLeds(midred: number, midyellow: number, midblue: number): void {
         midred = Math.max(0, Math.min(100, midred))
+        //Convert value from 0-100 to 0-4095 for PCA chip
         const pwm_mr = (midred * (chipResolution - 1)) / 100
         writeloop(8, 0, pwm_mr)
 
         midyellow = Math.max(0, Math.min(100, midyellow))
+        //Convert value from 0-100 to 0-4095 for PCA chip
         const pwm_my = (midyellow * (chipResolution - 1)) / 100
         writeloop(7, 0, pwm_my)
 
         midblue = Math.max(0, Math.min(100, midblue))
+        //Convert value from 0-100 to 0-4095 for PCA chip
         const pwm_mb = (midblue * (chipResolution - 1)) / 100
         writeloop(6, 0, pwm_mb)
     }
@@ -187,24 +218,24 @@ namespace CatCar {
 
 
     /**
-    * blablablabla
-    * @param direction kiezen tussen links en rechts draaien
-    * @param speed snelheid van de motor in %, eg:0-100
+    * CatCar vooruit of achteruit rijden
+    * @param direction - vooruit of achteruit (enum Directions)
+    * @param speed  -snelheid van de motor in %, eg:0-100
     *
     */
     //% block="Rijden %direction met snelheid %speed procent" weight=179
     export function rijden(direction: Directions = 20, speed: number): void {
-      direction = Math.max(20, Math.min(21, direction))
+      direction = Math.constrain(direction, Directions.voorwaards, Directions.achterwaards)
       const pca_spd_value = (speed * (chipResolution - 1)) / 100
 
-      if(direction === 20) {
+      if(direction === Directions.voorwaards) {
         writeloop(12, 0, pca_spd_value)
         writeloop(13, 0, 0)
         writeloop(14, 0, 0)
         writeloop(15, 0, pca_spd_value)
       }
 
-      if(direction === 21) {
+      if(direction === Directions.voorwaards) {
         writeloop(12, 0, 0)
         writeloop(13, 0, pca_spd_value)
         writeloop(14, 0, pca_spd_value)
@@ -215,23 +246,23 @@ namespace CatCar {
 
 
     /**
-    * blablablabla
-    * @param turning kiezen tussen links en rechts draaien
-    * @param speed snelheid van de motor in %, eg:0-100
+    * CatCar laten draaien
+    * @param turning - Linksom of rechtsom (enum Turn)
+    * @param speed - snelheid van de motor in %, eg:0-100
     */
     //% block="Draai %turning met snelheid %speed procent" weight=178
     export function draaien(turning: Turn = 10, speed: number): void {
-      turning = Math.max(10, Math.min(11, turning))
+      turning = Math.constrain(turning, Turn.links, Turn.rechts)
       const pca_spd_value = (speed * (chipResolution - 1)) / 100
 
-      if(turning === 10) {
+      if(turning === Turn.links) {
         writeloop(12, 0, 0)
         writeloop(13, 0, pca_spd_value)
         writeloop(14, 0, 0)
         writeloop(15, 0, pca_spd_value)
       }
 
-      if(turning === 11) {
+      if(turning === Turn.rechts) {
         writeloop(12, 0, pca_spd_value)
         writeloop(13, 0, 0)
         writeloop(14, 0, pca_spd_value)
