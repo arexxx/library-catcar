@@ -450,7 +450,13 @@ namespace CatCar {
 
 }
 
-﻿/*
+
+
+/* ==========================================
+    OLD VERSION FROM CHINESE CAT CAR: 
+==============================================*/
+
+/*
 Copyright (C): 2010-2019, Shenzhen Yahboom Tech
 modified from liusen
 load dependency
@@ -458,78 +464,76 @@ load dependency
 */
 
 //% color="#87CEEB" weight=24 icon="\uf1b6"
-namespace mbit_Sensor {
+// namespace mbit_Sensor {
 
 
-    export enum enIR {
-        //% blockId="Get" block="detected"
-        Get = 0,
-        //% blockId="NoVoice" block="undetected"
-        NoGet = 1
-    }
+//     export enum enIR {
+//         //% blockId="Get" block="detected"
+//         Get = 0,
+//         //% blockId="NoVoice" block="undetected"
+//         NoGet = 1
+//     }
     
 
 
-    function IR_send_38k() {
-        for (let i: number = 0; i < 8; i++) {
-            pins.digitalWritePin(DigitalPin.P9, 1);
-            control.waitMicros(13);
-            pins.digitalWritePin(DigitalPin.P9, 0);
-            control.waitMicros(13);
-        }
-    }
-    //% blockId=mbit_IR_Sensor block="IR_Sensor|pin %pin| |%value|obstacle"
-    //% weight=100
-    //% blockGap=10
-    //% color="#87CEEB"
-    //% name.fieldEditor="gridpicker" name.fieldOptions.columns=4
-    export function IR_Sensor(pin: DigitalPin, value: enIR): boolean {
+//     function IR_send_38k() {
+//         for (let i: number = 0; i < 8; i++) {
+//             pins.digitalWritePin(DigitalPin.P9, 1);
+//             control.waitMicros(13);
+//             pins.digitalWritePin(DigitalPin.P9, 0);
+//             control.waitMicros(13);
+//         }
+//     }
+//     //% blockId=mbit_IR_Sensor block="IR_Sensor|pin %pin| |%value|obstacle"
+//     //% weight=100
+//     //% blockGap=10
+//     //% color="#87CEEB"
+//     //% name.fieldEditor="gridpicker" name.fieldOptions.columns=4
+//     export function IR_Sensor(pin: DigitalPin, value: enIR): boolean {
 
-        pins.setPull(pin, PinPullMode.PullUp);
-        //IR_send_38k();
-        if (pins.digitalReadPin(pin) == value) {
-            return true;
-        }
-        else {
-            return false;
-        }
+//         pins.setPull(pin, PinPullMode.PullUp);
+//         //IR_send_38k();
+//         if (pins.digitalReadPin(pin) == value) {
+//             return true;
+//         }
+//         else {
+//             return false;
+//         }
 
-    }
+//     }
 
-    //% blockId=mbit_IR_Send block="IR_Send|pin %pin"
-    //% weight=100
-    //% blockGap=10
-    //% color="#87CEEB"
-    //% name.fieldEditor="gridpicker" name.fieldOptions.columns=4
-    export function IR_Send(pin: DigitalPin): void {
+//     //% blockId=mbit_IR_Send block="IR_Send|pin %pin"
+//     //% weight=100
+//     //% blockGap=10
+//     //% color="#87CEEB"
+//     //% name.fieldEditor="gridpicker" name.fieldOptions.columns=4
+//     export function IR_Send(pin: DigitalPin): void {
 
         
-        IR_send_38k();
+//         IR_send_38k();
 
-    }
+//     }
    
-    //% blockId=mbit_ultrasonic block="Ultrasonic|Trig %Trig|Echo %Echo"
-    //% color="#87CEEB"
-    //% weight=100
-    //% blockGap=10
-    //% name.fieldEditor="gridpicker" name.fieldOptions.columns=4
-    export function Ultrasonic(Trig: DigitalPin, Echo: DigitalPin): number {
+//     //% blockId=mbit_ultrasonic block="Ultrasonic|Trig %Trig|Echo %Echo"
+//     //% color="#87CEEB"
+//     //% weight=100
+//     //% blockGap=10
+//     //% name.fieldEditor="gridpicker" name.fieldOptions.columns=4
+//     export function Ultrasonic(Trig: DigitalPin, Echo: DigitalPin): number {
 
-        // send pulse
-        pins.setPull(Trig, PinPullMode.PullNone);
-        pins.digitalWritePin(Trig, 0);
-        control.waitMicros(2);
-        pins.digitalWritePin(Trig, 1);
-        control.waitMicros(15);
-        pins.digitalWritePin(Trig, 0);
+//         // send pulse
+//         pins.setPull(Trig, PinPullMode.PullNone);
+//         pins.digitalWritePin(Trig, 0);
+//         control.waitMicros(2);
+//         pins.digitalWritePin(Trig, 1);
+//         control.waitMicros(15);
+//         pins.digitalWritePin(Trig, 0);
 
-        // read pulse
-        let d = pins.pulseIn(Echo, PulseValue.High, 23200);
-        return  Math.floor(d / 58);
-    }
-}
-
-
+//         // read pulse
+//         let d = pins.pulseIn(Echo, PulseValue.High, 23200);
+//         return  Math.floor(d / 58);
+//     }
+// }
 
 //% color="#006400" weight=20 icon="\uf1b9"
 namespace mbit_Robot {
@@ -960,35 +964,7 @@ namespace mbit_Robot {
         return  Math.floor(length);
     }
 
-    //% blockId=mbit_Music_Car block="Music_Car|%index"
-    //% weight=97
-    //% blockGap=10
-    //% color="#006400"
-    //% name.fieldEditor="gridpicker" name.fieldOptions.columns=4
-    export function Music_Car(index: enMusic): void {
-        switch (index) {
-            case enMusic.dadadum: music.beginMelody(music.builtInMelody(Melodies.Dadadadum), MelodyOptions.Once); break;
-            case enMusic.birthday: music.beginMelody(music.builtInMelody(Melodies.Birthday), MelodyOptions.Once); break;
-            case enMusic.entertainer: music.beginMelody(music.builtInMelody(Melodies.Entertainer), MelodyOptions.Once); break;
-            case enMusic.prelude: music.beginMelody(music.builtInMelody(Melodies.Prelude), MelodyOptions.Once); break;
-            case enMusic.ode: music.beginMelody(music.builtInMelody(Melodies.Ode), MelodyOptions.Once); break;
-            case enMusic.nyan: music.beginMelody(music.builtInMelody(Melodies.Nyan), MelodyOptions.Once); break;
-            case enMusic.ringtone: music.beginMelody(music.builtInMelody(Melodies.Ringtone), MelodyOptions.Once); break;
-            case enMusic.funk: music.beginMelody(music.builtInMelody(Melodies.Funk), MelodyOptions.Once); break;
-            case enMusic.blues: music.beginMelody(music.builtInMelody(Melodies.Blues), MelodyOptions.Once); break;
-            case enMusic.wedding: music.beginMelody(music.builtInMelody(Melodies.Wedding), MelodyOptions.Once); break;
-            case enMusic.funereal: music.beginMelody(music.builtInMelody(Melodies.Funeral), MelodyOptions.Once); break;
-            case enMusic.punchline: music.beginMelody(music.builtInMelody(Melodies.Punchline), MelodyOptions.Once); break;
-            case enMusic.baddy: music.beginMelody(music.builtInMelody(Melodies.Baddy), MelodyOptions.Once); break;
-            case enMusic.chase: music.beginMelody(music.builtInMelody(Melodies.Chase), MelodyOptions.Once); break;
-            case enMusic.ba_ding: music.beginMelody(music.builtInMelody(Melodies.BaDing), MelodyOptions.Once); break;
-            case enMusic.wawawawaa: music.beginMelody(music.builtInMelody(Melodies.Wawawawaa), MelodyOptions.Once); break;
-            case enMusic.jump_up: music.beginMelody(music.builtInMelody(Melodies.JumpUp), MelodyOptions.Once); break;
-            case enMusic.jump_down: music.beginMelody(music.builtInMelody(Melodies.JumpDown), MelodyOptions.Once); break;
-            case enMusic.power_up: music.beginMelody(music.builtInMelody(Melodies.PowerUp), MelodyOptions.Once); break;
-            case enMusic.power_down: music.beginMelody(music.builtInMelody(Melodies.PowerDown), MelodyOptions.Once); break;
-        }
-    }
+
     //% blockId=mbit_Servo_Car block="Servo_Car|num %num|value %value"
     //% weight=96
     //% blockGap=10
@@ -1090,57 +1066,5 @@ namespace mbit_Robot {
             }
         }
         return temp;
-
-    }
-    //% blockId=mbit_CarCtrl block="CarCtrl|%index"
-    //% weight=93
-    //% blockGap=10
-    //% color="#006400"
-    //% name.fieldEditor="gridpicker" name.fieldOptions.columns=10
-    export function CarCtrl(index: CarState): void {
-        switch (index) {
-            case CarState.Car_Run: Car_run(255, 255); break;
-            case CarState.Car_Back: Car_back(255, 255); break;
-            case CarState.Car_Left: Car_left(0, 255); break;
-            case CarState.Car_Right: Car_right(255, 0); break;
-            case CarState.Car_Stop: Car_stop(); break;
-            case CarState.Car_SpinLeft: Car_spinleft(255, 255); break;
-            case CarState.Car_SpinRight: Car_spinright(255, 255); break;
-        }
-    }
-    //% blockId=mbit_CarCtrlSpeed block="CarCtrlSpeed|%index|speed %speed"
-    //% weight=92
-    //% blockGap=10
-    //% speed.min=0 speed.max=255
-    //% color="#006400"
-    //% name.fieldEditor="gridpicker" name.fieldOptions.columns=10
-    export function CarCtrlSpeed(index: CarState, speed: number): void {
-        switch (index) {
-            case CarState.Car_Run: Car_run(speed, speed); break;
-            case CarState.Car_Back: Car_back(speed, speed); break;
-            case CarState.Car_Left: Car_left(0, speed); break;
-            case CarState.Car_Right: Car_right(speed, 0); break;
-            case CarState.Car_Stop: Car_stop(); break;
-            case CarState.Car_SpinLeft: Car_spinleft(speed, speed); break;
-            case CarState.Car_SpinRight: Car_spinright(speed, speed); break;
-        }
-    }
-    //% blockId=mbit_CarCtrlSpeed2 block="CarCtrlSpeed2|%index|speed1 %speed1|speed2 %speed2"
-    //% weight=91
-    //% blockGap=10
-    //% speed1.min=0 speed1.max=255 speed2.min=0 speed2.max=255
-    //% color="#006400"
-    //% name.fieldEditor="gridpicker" name.fieldOptions.columns=10
-    export function CarCtrlSpeed2(index: CarState, speed1: number, speed2: number): void {
-        switch (index) {
-            case CarState.Car_Run: Car_run(speed1, speed2); break;
-            case CarState.Car_Back: Car_back(speed1, speed2); break;
-            case CarState.Car_Left: Car_left(0, speed2); break;
-            case CarState.Car_Right: Car_right(speed1, 0); break;
-            case CarState.Car_Stop: Car_stop(); break;
-            case CarState.Car_SpinLeft: Car_spinleft(speed1, speed2); break;
-            case CarState.Car_SpinRight: Car_spinright(speed1, speed2); break;
-        }
     }
 }
-
