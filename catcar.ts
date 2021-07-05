@@ -479,32 +479,10 @@ namespace CatCar {
         odometrieMonitorStarted = true;
     }
 
-}
 
-//% block="mBit_robot version"
-//% color="#006400" weight=20 icon="\uf1b9"
-namespace mbit_Robot {
 
-    export enum enColor {
 
-        //% blockId="OFF" block="off"
-        OFF = 0,
-        //% blockId="Red" block="red"
-        Red,
-        //% blockId="Green" block="green"
-        Green,
-        //% blockId="Blue" block="blue"
-        Blue,
-        //% blockId="White" block="white"
-        White,
-        //% blockId="Cyan" block="cyan"
-        Cyan,
-        //% blockId="Pinkish" block="magenta"
-        Pinkish,
-        //% blockId="Yellow" block="yellow"
-        Yellow,
-
-    }
+    
     export enum enPos {
         //% blockId="LeftState" block="left state"
         LeftState = 0,
