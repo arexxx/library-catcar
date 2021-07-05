@@ -1,6 +1,4 @@
 
-> Open deze pagina op [https://arexxx.github.io/library-catcar/](https://arexxx.github.io/library-catcar/)
-
 ## Gebruiken als extensie
 
 Deze repository kan worden toegevoegd als **extensie** in MakeCode.
