@@ -201,16 +201,20 @@ namespace CatCar {
     //% block="Maak midden leds: rood%midred geel%midyellow blauw%midblue" weight=187 group="LEDs"
     export function maakMiddenLeds(midred: number, midyellow: number, midblue: number): void {
         midred = Math.max(0, Math.min(100, midred))
+        //midLeds are active low (current sink through PCA chip) so invert set value:
+        Math.map(midred,0,100,100,0)
         //Convert value from 0-100 to 0-4095 for PCA chip
         const pwm_mr = (midred * (chipResolution - 1)) / 100
         writeloop(8, 0, pwm_mr)
 
         midyellow = Math.max(0, Math.min(100, midyellow))
+        Math.map(midyellow,0,100,100,0)
         //Convert value from 0-100 to 0-4095 for PCA chip
         const pwm_my = (midyellow * (chipResolution - 1)) / 100
         writeloop(7, 0, pwm_my)
 
         midblue = Math.max(0, Math.min(100, midblue))
+        Math.map(midblue,0,100,100,0)
         //Convert value from 0-100 to 0-4095 for PCA chip
         const pwm_mb = (midblue * (chipResolution - 1)) / 100
         writeloop(6, 0, pwm_mb)
