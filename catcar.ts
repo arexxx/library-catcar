@@ -116,7 +116,8 @@ namespace CatCar {
     /**
      * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs
      */
-    //% block weight=199 group="utility" advanced=true
+    //% block weight=199 group="utility"
+    //% block="Initialiseer CatCar"
     export function resetLedsEnMotor(): void {
         const prescaler = (osc_clock / (pca_frequency * chipResolution)) - 1;
 
