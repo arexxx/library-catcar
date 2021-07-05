@@ -116,7 +116,7 @@ namespace CatCar {
     /**
      * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs
      */
-    //% block weight=199 group="utility"
+    //% block weight=199 group="utility" advanced=true
     export function resetLedsEnMotor(): void {
         const prescaler = (osc_clock / (pca_frequency * chipResolution)) - 1;
 
@@ -406,7 +406,7 @@ namespace CatCar {
     /**
     * blablabla
     */
-    //% blockId="wheelrotationsRight" block="speed right" weight=98 group="Motor"
+    //% blockId="wheelrotationsRight" block="speed right" weight=98 group="Motor" advanced=true
     export function wheelrotationsRight(): number {
         startOdometrieMonitoring();
         return rotationsRight
@@ -416,7 +416,7 @@ namespace CatCar {
     /**
     * blablabla
     */
-    //% blockId="wheelrotationsLeft" block="speed left" weight=97 group="Motor"
+    //% blockId="wheelrotationsLeft" block="speed left" weight=97 group="Motor" advanced=true
     export function wheelrotationsLeft(): number {
         startOdometrieMonitoring();
         return rotationsLeft
@@ -428,7 +428,7 @@ namespace CatCar {
     * numWindTurns on said event.  Starts background service to reset
     * numWindTurns every 1 seconds and calculate MPH.
     */
-    //% blockId="startOdometrieMonitoring" block="start odometrie" weight=99 group="Motor"
+    //% blockId="startOdometrieMonitoring" block="start odometrie" weight=99 group="Motor" advanced=true
     export function startOdometrieMonitoring(): void {
       if (odometrieMonitorStarted) return;
 
