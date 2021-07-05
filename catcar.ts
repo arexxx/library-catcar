@@ -10,6 +10,7 @@
 
 //
 //% weight=100 color=#0fbc11 icon=""
+//% groups=["Motor", "LED", "Sensors","Utility"]
 namespace CatCar {
 
     /**
@@ -61,11 +62,12 @@ namespace CatCar {
 
 
     //Directional Enums
+    //% group="Utility"
     export enum Turn {
       links = 10,
       rechts = 11,
     }
-
+    //% group="Utility"
     export enum Directions {
       voorwaards = 20,
       achterwaards = 21,
@@ -114,7 +116,7 @@ namespace CatCar {
     /**
      * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs
      */
-    //% block weight=199
+    //% block weight=199 group="utility"
     export function resetLedsEnMotor(): void {
         const prescaler = (osc_clock / (pca_frequency * chipResolution)) - 1;
 
@@ -144,7 +146,7 @@ namespace CatCar {
      * @param frontblue - Percentage Blue in RGB value
      */
     //% block="Maak koplampen: Rood%frontred Groen%frontgreen Blauw%frontblue" 
-    //% weight=189
+    //% weight=189 group="LEDs"
     //% frontred.max=100 frontred.min=0 frontgreen.max=100 frontgreen.min=0 frontblue.max=100 frontblue.min=0 
     export function maakKoplampen(frontred: number, frontgreen: number, frontblue: number): void {
         frontred = Math.max(0, Math.min(100, frontred))
@@ -167,7 +169,7 @@ namespace CatCar {
      * @param backLyellow - Set the PWM percentage for the left yellow LED
      * @param backRyellow - Set the PWM percentage for the right yellow LED
      */
-    //% block="Maak achterlampen: geel links%backLyellow rood%backred geel rechts%backRyellow" weight=188
+    //% block="Maak achterlampen: geel links%backLyellow rood%backred geel rechts%backRyellow" weight=188 group="LEDs"
     //% backred.min=0 backred.max=100
     //% backLyellow.min=0 backLyellow.max=100
     //% backRyellow.min=0 backRyellow.max=100
@@ -195,7 +197,7 @@ namespace CatCar {
      * @param midyellow - Set percentage for the yellow LED
      * @param midblue - Set percentage for the blue LED
      */
-    //% block="Maak midden leds: rood%midred geel%midyellow blauw%midblue" weight=187
+    //% block="Maak midden leds: rood%midred geel%midyellow blauw%midblue" weight=187 group="LEDs"
     export function maakMiddenLeds(midred: number, midyellow: number, midblue: number): void {
         midred = Math.max(0, Math.min(100, midred))
         //Convert value from 0-100 to 0-4095 for PCA chip
@@ -223,7 +225,7 @@ namespace CatCar {
     * @param speed  -snelheid van de motor in %, eg:0-100
     *
     */
-    //% block="Rijden %direction met snelheid %speed procent" weight=179
+    //% block="Rijden %direction met snelheid %speed procent" weight=179 group="Motor"
     export function rijden(direction: Directions = 20, speed: number): void {
       direction = Math.constrain(direction, Directions.voorwaards, Directions.achterwaards)
       const pca_spd_value = (speed * (chipResolution - 1)) / 100
@@ -249,8 +251,8 @@ namespace CatCar {
     * CatCar laten draaien
     * @param turning - Linksom of rechtsom (enum Turn)
     * @param speed - snelheid van de motor in %, eg:0-100
-    */
-    //% block="Draai %turning met snelheid %speed procent" weight=178
+    */ 
+    //% block="Draai %turning met snelheid %speed procent" weight=178 group="Motor"
     export function draaien(turning: Turn = 10, speed: number): void {
       turning = Math.constrain(turning, Turn.links, Turn.rechts)
       const pca_spd_value = (speed * (chipResolution - 1)) / 100
@@ -276,7 +278,7 @@ namespace CatCar {
     * blablablabla
     *
     */
-    //% block="Stoppen met rijden" weight=177
+    //% block="Stoppen met rijden" weight=177 group="Motor"
     export function stoppenrijden(): void {
       writeloop(12, 0, 0)
       writeloop(13, 0, 0)
@@ -294,7 +296,7 @@ namespace CatCar {
     * @param speed snelheid van de motor in cm/s min:5 max:20 cm/s, eg:10
     *
     */
-    //% block="rijden %direction met snelheid %speed cm/s" weight=169
+    //% block="rijden %direction met snelheid %speed cm/s" weight=169 group="Motor"
     export function rijdensnelheid(direction: Directions = 20, speed: number): void {
       led.enable (false)
       direction = Math.max(20, Math.min(21, direction))
@@ -372,7 +374,7 @@ namespace CatCar {
     * afstand meting via ultrasoon sensor
     */
     //% block="afstand ultrasoon"
-    //% weight=159
+    //% weight=159 group="Sensors"
     export function sonar(): number {
       // send pulse
       led.enable (false);
@@ -404,7 +406,7 @@ namespace CatCar {
     /**
     * blablabla
     */
-    //% blockId="wheelrotationsRight" block="speed right" weight= 98
+    //% blockId="wheelrotationsRight" block="speed right" weight=98 group="Motors"
     export function wheelrotationsRight(): number {
         startOdometrieMonitoring();
         return rotationsRight
@@ -414,7 +416,7 @@ namespace CatCar {
     /**
     * blablabla
     */
-    //% blockId="wheelrotationsLeft" block="speed left" weight=97
+    //% blockId="wheelrotationsLeft" block="speed left" weight=97 group="Motors"
     export function wheelrotationsLeft(): number {
         startOdometrieMonitoring();
         return rotationsLeft
@@ -426,7 +428,7 @@ namespace CatCar {
     * numWindTurns on said event.  Starts background service to reset
     * numWindTurns every 1 seconds and calculate MPH.
     */
-    //% blockId="startOdometrieMonitoring" block="start odometrie" weight=99
+    //% blockId="startOdometrieMonitoring" block="start odometrie" weight=99 group="Motors"
     export function startOdometrieMonitoring(): void {
       if (odometrieMonitorStarted) return;
 
@@ -482,21 +484,21 @@ namespace CatCar {
 
 
 
-    
+    //% group="Sensors"
     export enum enPos {
         //% blockId="LeftState" block="left state"
         LeftState = 0,
         //% blockId="RightState" block="right state"
         RightState = 1
     }
-
+    //% group="Sensors"
     export enum enLineState {
         //% blockId="White" block="white"
         White = 0,
         //% blockId="Black" block="black"
         Black = 1
     }
-    
+    //% group="Sensors"
     export enum enAvoidState {
         //% blockId="OBSTACLE" block="with obstacles"
         OBSTACLE = 0,
@@ -505,9 +507,8 @@ namespace CatCar {
     }
 
     //% blockId=mbit_Avoid_Sensor block="Avoid_Sensor|value %value"
-    //% weight=95
+    //% weight=95 group="Sensors"
     //% blockGap=10
-    //% color="#006400"
     //% name.fieldEditor="gridpicker" name.fieldOptions.columns=12
     export function Avoid_Sensor(value: enAvoidState): boolean {
 
@@ -544,9 +545,8 @@ namespace CatCar {
 
     }
     //% blockId=mbit_Line_Sensor block="Line_Sensor|direct %direct|value %value"
-    //% weight=94
+    //% weight=94 group="Sensors"
     //% blockGap=10
-    //% color="#006400"
     //% name.fieldEditor="gridpicker" name.fieldOptions.columns=12
     export function Line_Sensor(direct: enPos, value: enLineState): boolean {
 
