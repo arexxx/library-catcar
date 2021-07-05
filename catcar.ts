@@ -275,7 +275,7 @@ namespace CatCar {
 
 
     /**
-    * blablablabla
+    * Disable the motors and stop driving
     *
     */
     //% block="Stoppen met rijden" weight=177 group="Motor"
@@ -404,7 +404,7 @@ namespace CatCar {
 
 
     /**
-    * blablabla
+    * Rotaties van het rechterwiel
     */
     //% blockId="wheelrotationsRight" block="speed right" weight=98 group="Motor" advanced=true
     export function wheelrotationsRight(): number {
@@ -414,7 +414,7 @@ namespace CatCar {
 
 
     /**
-    * blablabla
+    * rotaties van het linkerwiel
     */
     //% blockId="wheelrotationsLeft" block="speed left" weight=97 group="Motor" advanced=true
     export function wheelrotationsLeft(): number {
