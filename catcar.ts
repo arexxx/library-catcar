@@ -406,7 +406,7 @@ namespace CatCar {
     /**
     * blablabla
     */
-    //% blockId="wheelrotationsRight" block="speed right" weight=98 group="Motors"
+    //% blockId="wheelrotationsRight" block="speed right" weight=98 group="Motor"
     export function wheelrotationsRight(): number {
         startOdometrieMonitoring();
         return rotationsRight
@@ -416,7 +416,7 @@ namespace CatCar {
     /**
     * blablabla
     */
-    //% blockId="wheelrotationsLeft" block="speed left" weight=97 group="Motors"
+    //% blockId="wheelrotationsLeft" block="speed left" weight=97 group="Motor"
     export function wheelrotationsLeft(): number {
         startOdometrieMonitoring();
         return rotationsLeft
@@ -428,7 +428,7 @@ namespace CatCar {
     * numWindTurns on said event.  Starts background service to reset
     * numWindTurns every 1 seconds and calculate MPH.
     */
-    //% blockId="startOdometrieMonitoring" block="start odometrie" weight=99 group="Motors"
+    //% blockId="startOdometrieMonitoring" block="start odometrie" weight=99 group="Motor"
     export function startOdometrieMonitoring(): void {
       if (odometrieMonitorStarted) return;
 
