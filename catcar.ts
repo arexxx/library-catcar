@@ -242,7 +242,7 @@ namespace CatCar {
         writeloop(15, 0, pca_spd_value)
       }
 
-      if(direction === Directions.voorwaards) {
+      if(direction === Directions.achterwaards) {
         writeloop(12, 0, 0)
         writeloop(13, 0, pca_spd_value)
         writeloop(14, 0, pca_spd_value)
