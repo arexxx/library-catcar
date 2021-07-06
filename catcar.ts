@@ -114,7 +114,7 @@ namespace CatCar {
 
 
     /**
-     * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs
+     * Initialiseer de CatCar, deze functie moet altijd in bij opstarten staan!
      */
     //% block weight=199 group="utility"
     //% block="Initialiseer CatCar"
@@ -490,39 +490,43 @@ namespace CatCar {
 
 
     //% group="Sensors"
-    export enum enPos {
+    export enum lijnSensor {
         //% blockId="LeftState" block="left state"
-        LeftState = 0,
+        links = 0,
         //% blockId="RightState" block="right state"
-        RightState = 1
+        rechts = 1
     }
     //% group="Sensors"
-    export enum enLineState {
+    export enum lijnKleur {
         //% blockId="White" block="white"
-        White = 0,
+        wit = 0,
         //% blockId="Black" block="black"
-        Black = 1
+        zwart = 1
     }
     //% group="Sensors"
-    export enum enAvoidState {
+    export enum voorkantIR {
         //% blockId="OBSTACLE" block="with obstacles"
-        OBSTACLE = 0,
+        zietIets = 0,
         //% blockId="NOOBSTACLE" block="without obstacles"
-        NOOBSTACLE = 1
+        zietNiets = 1
     }
 
+    /**
+     * Kijk of de IR sensor op de voorkant wel of niet een obstakel ziet
+     * @param value - Selecteer of je wilt controleren voor wel- of geen obstakel
+     */
     //% blockId=mbit_Avoid_Sensor block="Avoid_Sensor|value %value"
     //% weight=95 group="Sensors"
     //% blockGap=10
     //% name.fieldEditor="gridpicker" name.fieldOptions.columns=12
-    export function Avoid_Sensor(value: enAvoidState): boolean {
+    export function Avoid_Sensor(value: voorkantIR): boolean {
 
         let temp: boolean = false;
         pins.setPull(DigitalPin.P9, PinPullMode.PullUp)
         pins.digitalWritePin(DigitalPin.P9, 0);
         control.waitMicros(100);
         switch (value) {
-            case enAvoidState.OBSTACLE: {
+            case voorkantIR.zietIets: {
                 serial.writeNumber(pins.analogReadPin(AnalogPin.P3))
                 if (pins.analogReadPin(AnalogPin.P3) < 800) {
                 
@@ -534,7 +538,7 @@ namespace CatCar {
                 break;
             }
 
-            case enAvoidState.NOOBSTACLE: {
+            case voorkantIR.zietNiets: {
                 if (pins.analogReadPin(AnalogPin.P3) > 800) {
 
                     temp = true;
@@ -549,37 +553,43 @@ namespace CatCar {
         return temp;
 
     }
+
+    /**
+     * Kijk of een lijnsensor wit of zwart ziet
+     * @param direct - Kies de linker of rechter sensor
+     * @param value - Kies of je wilt controleren voor wit of zwart
+     */
     //% blockId=mbit_Line_Sensor block="Line_Sensor|direct %direct|value %value"
     //% weight=94 group="Sensors"
     //% blockGap=10
     //% name.fieldEditor="gridpicker" name.fieldOptions.columns=12
-    export function Line_Sensor(direct: enPos, value: enLineState): boolean {
+    export function Line_Sensor(direct: lijnSensor, value: lijnKleur): boolean {
 
         let temp: boolean = false;
 
         switch (direct) {
-            case enPos.LeftState: {
+            case lijnSensor.links: {
                 if (pins.analogReadPin(AnalogPin.P2) < 500) {
-                    if (value == enLineState.White) {
+                    if (value == lijnKleur.wit) {
                         temp = true;
                     }
                 }
                 else {
-                    if (value == enLineState.Black) {
+                    if (value == lijnKleur.zwart) {
                         temp = true;
                     }
                 }
                 break;
             }
 
-            case enPos.RightState: {
+            case lijnSensor.rechts: {
                 if (pins.analogReadPin(AnalogPin.P1) < 500) {
-                    if (value == enLineState.White) {
+                    if (value == lijnKleur.wit) {
                         temp = true;
                     }
                 }
                 else {
-                    if (value == enLineState.Black) {
+                    if (value == lijnKleur.zwart) {
                         temp = true;
                     }
                 }
