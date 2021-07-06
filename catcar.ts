@@ -491,23 +491,23 @@ namespace CatCar {
 
     //% group="Sensors"
     export enum lijnSensor {
-        //% blockId="LeftState" block="left state"
+        //% blockId="LeftlineSensor" block="links"
         links = 0,
-        //% blockId="RightState" block="right state"
+        //% blockId="rightLineSensor" block="rechts"
         rechts = 1
     }
     //% group="Sensors"
     export enum lijnKleur {
-        //% blockId="White" block="white"
+        //% blockId="White" block="wit"
         wit = 0,
-        //% blockId="Black" block="black"
+        //% blockId="Black" block="zwart"
         zwart = 1
     }
     //% group="Sensors"
     export enum voorkantIR {
-        //% blockId="OBSTACLE" block="with obstacles"
+        //% blockId="OBSTACLE" block="ziet iets"
         zietIets = 0,
-        //% blockId="NOOBSTACLE" block="without obstacles"
+        //% blockId="NOOBSTACLE" block="ziet niets"
         zietNiets = 1
     }
 
@@ -559,23 +559,23 @@ namespace CatCar {
      * @param direct - Kies de linker of rechter sensor
      * @param value - Kies of je wilt controleren voor wit of zwart
      */
-    //% blockId=mbit_Line_Sensor block="Line_Sensor|direct %direct|value %value"
+    //% blockId=mbit_Line_Sensor block="Kijk op lijnsensor %linksRechts voor kleur %kleur"
     //% weight=94 group="Sensors"
     //% blockGap=10
     //% name.fieldEditor="gridpicker" name.fieldOptions.columns=12
-    export function Line_Sensor(direct: lijnSensor, value: lijnKleur): boolean {
+    export function Line_Sensor(linksRechts: lijnSensor, kleur: lijnKleur): boolean {
 
         let temp: boolean = false;
 
-        switch (direct) {
+        switch (linksRechts) {
             case lijnSensor.links: {
                 if (pins.analogReadPin(AnalogPin.P2) < 500) {
-                    if (value == lijnKleur.wit) {
+                    if (kleur == lijnKleur.wit) {
                         temp = true;
                     }
                 }
                 else {
-                    if (value == lijnKleur.zwart) {
+                    if (kleur == lijnKleur.zwart) {
                         temp = true;
                     }
                 }
@@ -584,12 +584,12 @@ namespace CatCar {
 
             case lijnSensor.rechts: {
                 if (pins.analogReadPin(AnalogPin.P1) < 500) {
-                    if (value == lijnKleur.wit) {
+                    if (kleur == lijnKleur.wit) {
                         temp = true;
                     }
                 }
                 else {
-                    if (value == lijnKleur.zwart) {
+                    if (kleur == lijnKleur.zwart) {
                         temp = true;
                     }
                 }
