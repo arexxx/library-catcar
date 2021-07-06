@@ -515,7 +515,7 @@ namespace CatCar {
      * Kijk of de IR sensor op de voorkant wel of niet een obstakel ziet
      * @param value - Selecteer of je wilt controleren voor wel- of geen obstakel
      */
-    //% blockId=mbit_Avoid_Sensor block="Kijk of de voorkant IR sensor %value ziet"
+    //% blockId=mbit_Avoid_Sensor block="Kijk of de voorkant IR sensor |%value ziet"
     //% weight=95 group="Sensors"
     //% blockGap=10
     //% name.fieldEditor="gridpicker" name.fieldOptions.columns=12
