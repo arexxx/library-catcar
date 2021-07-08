@@ -598,4 +598,126 @@ namespace CatCar {
         }
         return temp;
     }
+
+
+    //_____________________________________________________________________________________________________//
+                //color sensor TCS34725
+
+    const tcs_cdatal = 0x14             /**< Clear channel data low byte */
+    const tcs_cdatah = 0x15             /**< Clear channel data high byte */
+    const tcs_rdatal = 0x16             /**< Red channel data low byte */
+    const tcs_rdatah = 0x17             /**< Red channel data high byte */
+    const tcs_gdatal = 0x18             /**< Green channel data low byte */
+    const tcs_gdatah = 0x19             /**< Green channel data high byte */
+    const tcs_bdatal = 0x1A             /**< Blue channel data low byte */
+    const tcs_bdatah = 0x1B             /**< Blue channel data high byte */
+
+    const tcs_adress = 0x29             /**< I2C address **/
+    const tcs_command_bit = 0x80        /**< Command bit **/
+    const tcs_id = 0x12                 /**< 0x44 = TCS34721/TCS34725, 0x4D = TCS34723/TCS34727 */
+
+    const tcs_enable = 0x00             /**< Interrupt Enable register */
+    const tcs_enable_pon = 0x01         /**< Power on - Writing 1 activates the internal oscillator, 0 disables it */
+    const tcs_enable_aen = 0x02         /**< RGBC Enable - Writing 1 actives the ADC, 0 disables it */
+
+    const tcs_atime = 0x01              /**< Integration time */
+    const tcs_integrationtime = 0xEB    /**< 50.4ms - 21 cycles - Max Count: 21504 */
+    const tcs_control = 0x0F            /**< Set the gain level for the sensor */
+    const tcs_gain = 0x00               /**< 0x00 = No gain; 0x01 = 4x gain; 0x02 = 16x gain; 0x03 = 60x gain  */
+
+    const tcs_initialised = false
+
+
+
+    function tcs_write(reg: number, value: number): void {
+        const tcs_buffer = pins.createBuffer(4)
+        buffer[0] = tcs_command_bit
+        buffer[1] = reg
+        buffer[2] = value
+        buffer[3] = 0xff
+        pins.i2cWriteBuffer(tcs_adress, buffer, false)
+    }
+
+
+    function tcs_read(reg:number){
+        const tcs_buffer = pins.createBuffer(2)
+        buffer[0] = tcs_command_bit
+        buffer[1] = reg
+        pins.i2cWriteBuffer(chip_address, buffer, false)
+
+        return pins.i2cReadNumber(chip_address, NumberFormat.Int8LE)
+    }
+
+
+    function tcs_init():boolean{
+        let x = tcs_read(tcs_id)
+        if ((x != 0x4d) && (x != 0x44) && (x != 0x10)) {
+            return false;
+        }
+        tcs_write(tcs_atime, tcs_integrationtime)
+        tcs_write(tcs_control, tcs_gain)
+
+        tcs_initialised = true;
+
+
+
+
+
+
+
+        //tcs_setIntegrationTime(_tcs34725IntegrationTime);
+        //setGain(_tcs34725Gain)
+    }
+
+    //function tcs_setIntegrationTime(it:number){
+
+    //}
+
+    //function tcs_setGain
+
+
+
+
+
+
+
+
+pins.i2cReadBuffer(0, 0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void Adafruit_TCS34725::enable() {
+  write8(TCS34725_ENABLE, TCS34725_ENABLE_PON);
+  delay(3);
+  write8(TCS34725_ENABLE, TCS34725_ENABLE_PON | TCS34725_ENABLE_AEN);
+  /* Set a delay for the integration time.
+    This is only necessary in the case where enabling and then
+    immediately trying to read values back. This is because setting
+    AEN triggers an automatic integration, so if a read RGBC is
+    performed too quickly, the data is not yet valid and all 0's are
+    returned */
+  /* 12/5 = 2.4, add 1 to account for integer truncation */
+  delay((256 - _tcs34725IntegrationTime) * 12 / 5 + 1);
+}
+
+
+
+
+
 }
