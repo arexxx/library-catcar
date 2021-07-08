@@ -737,13 +737,13 @@ namespace CatCar {
         return red
     }
 
-    //% weight=152 group="Sensors"
+    //% weight=151 group="Sensors"
     export function greenIs(): number {
         tcs_data();
         return green
     }
 
-    //% weight=152 group="Sensors"
+    //% weight=150 group="Sensors"
     export function blueIs(): number {
         tcs_data();
         return blue
