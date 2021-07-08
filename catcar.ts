@@ -716,19 +716,23 @@ namespace CatCar {
         let rawGreen = tcs_read16(tcs_gdatal)
         let rawBlue = tcs_read16(tcs_bdatal)
         let rawClear = tcs_read16(tcs_cdatal)
-        
         basic.pause((256 - tcs_integrationtime) * 12 / 5 + 1);
 
-        serial.writeValue("red", rawRed)
-        serial.writeValue("green", rawGreen)
-        serial.writeValue("blue", rawBlue)
-        serial.writeLine("-")
+        if (rawClear === 0){
+            rawRed = rawGreen = rawBlue = 0;
+            return;
+        }
 
         let sum = rawClear
 
         red = rawRed / sum * 255
         green = rawGreen / sum * 255
         blue = rawBlue / sum * 255
+
+        serial.writeValue("red", red)
+        serial.writeValue("green", green)
+        serial.writeValue("blue", blue)
+        serial.writeLine("-")
     }
 
     //% blockId="redIs" block="rood is" weight=152 group="Sensors"
@@ -761,10 +765,10 @@ namespace CatCar {
         if((colorIs === tcskleur.rood) && (redIs()>220) && (greenIs()<170) && (blueIs()<170)) {
         }
         
-        if((colorIs === tcskleur.groen) && (redIs()>220) && (greenIs()<170) && (blueIs()<170)) {
+        if((colorIs === tcskleur.groen) && (redIs()>1) && (greenIs()<1) && (blueIs()<1)) {
         }
         
-        if((colorIs === tcskleur.blauw) && (redIs()>220) && (greenIs()<170) && (blueIs()<170)) {
+        if((colorIs === tcskleur.blauw) && (redIs()>1) && (greenIs()<1) && (blueIs()<1)) {
         }
     }
 
