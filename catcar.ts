@@ -726,24 +726,24 @@ namespace CatCar {
 
         let sum = rawClear
 
-        let red = rawRed / sum * 255
-        let green = rawGreen / sum * 255
-        let blue = rawBlue / sum * 255
+        red = rawRed / sum * 255
+        green = rawGreen / sum * 255
+        blue = rawBlue / sum * 255
     }
 
-    //% weight=152 group="Sensors"
+    //% blockId="redIs" block="rood is" weight=152 group="Sensors"
     export function redIs(): number {
         tcs_data();
         return red
     }
 
-    //% weight=151 group="Sensors"
+    //% blockId="greenIs" block="groen is" weight=151 group="Sensors"
     export function greenIs(): number {
         tcs_data();
         return green
     }
 
-    //% weight=150 group="Sensors"
+    //% blockId="blueIs" block="blauw is" weight=150 group="Sensors"
     export function blueIs(): number {
         tcs_data();
         return blue
