@@ -648,8 +648,8 @@ namespace CatCar {
 
         pins.i2cWriteNumber(tcs_adress, tcs_command_bit | reg, NumberFormat.Int8LE)
         
-        t = pins.i2cReadNumber(tcs_adress, NumberFormat.Int8LE)
-        x = pins.i2cReadNumber(tcs_adress, NumberFormat.Int8LE)
+        t = pins.i2cReadNumber(tcs_adress, NumberFormat.UInt8LE)
+        x = pins.i2cReadNumber(tcs_adress, NumberFormat.UInt8LE)
 
         return x;
 
@@ -705,13 +705,13 @@ namespace CatCar {
         
         basic.pause((256 - tcs_integrationtime) * 12 / 5 + 1);
 
-        serial.writeValue("red: ", rawRed)
+        serial.writeValue("red", rawRed)
 
-        serial.writeValue("green: ", rawGreen)
+        serial.writeValue("green", rawGreen)
 
-        serial.writeValue("blue: ", rawBlue)
+        serial.writeValue("blue", rawBlue)
 
-        serial.writeLine("")
+        serial.writeLine("-")
 
     }
     
