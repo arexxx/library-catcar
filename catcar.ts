@@ -695,14 +695,23 @@ namespace CatCar {
     }
 
 
+    export function tcs_data():void {
 
+        let rawRed = tcs_read16(tcs_rdatal)
+        let rawGreen = tcs_read16(tcs_gdatal)
+        let rawBlue = tcs_read16(tcs_bdatal)
+        
+        basic.pause((256 - tcs_integrationtime) * 12 / 5 + 1);
 
+        serial.writeLine("red:")
+        serial.writeNumber(rawRed)
 
+        serial.writeLine("green:")
+        serial.writeNumber(rawGreen)
 
+        serial.writeLine("blue:")
+        serial.writeNumber(rawBlue)
 
-
-
-
-
-
+    }
+    
 }
