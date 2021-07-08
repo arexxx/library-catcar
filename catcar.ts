@@ -627,6 +627,10 @@ namespace CatCar {
 
     let tcs_initialised = false
 
+    let red: number = 0
+    let green: number = 0
+    let blue: number = 0
+
 
 
     export enum tcskleur {
@@ -706,25 +710,47 @@ namespace CatCar {
 
     //% block="kleuren sensor uitlezen"
     //% weight=153 group="Sensors"
-    export function tcs_data():void {
+    export function tcs_data() :void{
 
         let rawRed = tcs_read16(tcs_rdatal)
         let rawGreen = tcs_read16(tcs_gdatal)
         let rawBlue = tcs_read16(tcs_bdatal)
+        let rawClear = tcs_read16(tcs_cdatal)
         
         basic.pause((256 - tcs_integrationtime) * 12 / 5 + 1);
 
         serial.writeValue("red", rawRed)
-
         serial.writeValue("green", rawGreen)
-
         serial.writeValue("blue", rawBlue)
-
         serial.writeLine("-")
 
+        let sum = rawClear
+
+        let red = rawRed / sum * 255
+        let green = rawGreen / sum * 255
+        let blue = rawBlue / sum * 255
+    }
+
+    //% weight=152 group="Sensors"
+    export function redIs(): number {
+        tcs_data();
+        return red
+    }
+
+    //% weight=152 group="Sensors"
+    export function greenIs(): number {
+        tcs_data();
+        return green
+    }
+
+    //% weight=152 group="Sensors"
+    export function blueIs(): number {
+        tcs_data();
+        return blue
     }
     
-
+    
+    
     /**
     * tcs34725 kleur uitlezen
     * @param colorIs - (enum tcskleur)
@@ -732,13 +758,13 @@ namespace CatCar {
     */ 
     //% block="kleur sensor is %colorIs " weight=152 group="Sensors"
     export function colorRead(colorIs: tcskleur, body: () => void): void {
-        if(colorIs === tcskleur.rood) {
+        if((colorIs === tcskleur.rood) && (redIs()>220) && (greenIs()<170) && (blueIs()<170)) {
         }
         
-        if(colorIs === tcskleur.groen) {
+        if((colorIs === tcskleur.groen) && (redIs()>220) && (greenIs()<170) && (blueIs()<170)) {
         }
         
-        if(colorIs === tcskleur.blauw) {
+        if((colorIs === tcskleur.blauw) && (redIs()>220) && (greenIs()<170) && (blueIs()<170)) {
         }
     }
 
