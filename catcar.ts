@@ -638,11 +638,8 @@ namespace CatCar {
 
 
     function tcs_read8(reg: number){
-        const tcs_buffer = pins.createBuffer(1)
-        tcs_buffer[0] = tcs_command_bit | reg
-        pins.i2cWriteBuffer(chip_address, tcs_buffer, false)
-
-        return pins.i2cReadNumber(chip_address, NumberFormat.Int8LE)
+        pins.i2cWriteNumber(tcs_adress, tcs_command_bit | reg, NumberFormat.Int8LE)
+        return pins.i2cReadNumber(tcs_adress, NumberFormat.Int8LE)
     }
 
     function tcs_read16(reg: number){
@@ -651,10 +648,10 @@ namespace CatCar {
 
         const tcs_buffer = pins.createBuffer(1)
         tcs_buffer[0] = tcs_command_bit | reg
-        pins.i2cWriteBuffer(chip_address, tcs_buffer, false)
+        pins.i2cWriteBuffer(tcs_adress, tcs_buffer, false)
         
-        t = pins.i2cReadNumber(chip_address, NumberFormat.Int8LE)
-        x = pins.i2cReadNumber(chip_address, NumberFormat.Int8LE)
+        t = pins.i2cReadNumber(tcs_adress, NumberFormat.Int8LE)
+        x = pins.i2cReadNumber(tcs_adress, NumberFormat.Int8LE)
 
         return x;
 
@@ -666,8 +663,13 @@ namespace CatCar {
     //% weight=154 group="Sensors"
 
     export function tcs_init():boolean{
+        let x = 0
+        serial.writeNumber(x)        
         serial.writeLine("Connected?")
-        let x = tcs_read8(tcs_id)
+
+        x = tcs_read8(tcs_id)
+        serial.writeNumber(x)
+
         if ((x != 0x4d) && (x != 0x44) && (x != 0x10)) {
             serial.writeLine("NOOOO")
             return false;
