@@ -623,9 +623,18 @@ namespace CatCar {
     const tcs_atime = 0x01              /**< Integration time */
     const tcs_integrationtime = 0xEB    /**< 50.4ms - 21 cycles - Max Count: 21504 */
     const tcs_control = 0x0F            /**< Set the gain level for the sensor */
-    const tcs_gain = 0x00               /**< 0x00 = No gain; 0x01 = 4x gain; 0x02 = 16x gain; 0x03 = 60x gain  */
+    const tcs_gain = 0x02               /**< 0x00 = No gain; 0x01 = 4x gain; 0x02 = 16x gain; 0x03 = 60x gain  */
 
     let tcs_initialised = false
+
+
+
+    export enum tcskleur {
+      rood,
+      groen,
+      blauw
+    }
+
 
 
 
@@ -662,14 +671,14 @@ namespace CatCar {
 
     export function tcs_init():boolean{
         let x = 0
-        serial.writeNumber(x)        
-        serial.writeLine("Connected?")
+        //serial.writeNumber(x)        
+        //serial.writeLine("Connected?")
 
         x = tcs_read8(tcs_id)
-        serial.writeNumber(x)
+        //serial.writeNumber(x)
 
         if ((x != 0x4d) && (x != 0x44) && (x != 0x10)) {
-            serial.writeLine("NOOOO")
+            //serial.writeLine("NOOOO")
             return false;
         }
         tcs_write(tcs_atime, tcs_integrationtime)
@@ -686,7 +695,7 @@ namespace CatCar {
         returned */
         /* 12/5 = 2.4, add 1 to account for integer truncation */
         basic.pause((256 - tcs_integrationtime) * 12 / 5 + 1);
-        serial.writeLine("YEEAAHHH")
+        //serial.writeLine("YEEAAHHH")
 
         tcs_initialised = true;
         return true;
@@ -715,4 +724,22 @@ namespace CatCar {
 
     }
     
+
+    /**
+    * tcs34725 kleur uitlezen
+    * @param colorIs - (enum tcskleur)
+    * @param body TODO
+    */ 
+    //% block="kleur sensor is %colorIs " weight=152 group="Sensors"
+    export function colorRead(colorIs: tcskleur, body: () => void): void {
+        if(colorIs === tcskleur.rood) {
+        }
+        
+        if(colorIs === tcskleur.groen) {
+        }
+        
+        if(colorIs === tcskleur.blauw) {
+        }
+    }
+
 }
