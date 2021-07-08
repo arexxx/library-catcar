@@ -661,6 +661,10 @@ namespace CatCar {
     }
 
 
+
+    //% block="init kleuren sensor"
+    //% weight=154 group="Sensors"
+
     export function tcs_init():boolean{
         serial.writeLine("Connected?")
         let x = tcs_read8(tcs_id)
