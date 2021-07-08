@@ -705,14 +705,11 @@ namespace CatCar {
         
         basic.pause((256 - tcs_integrationtime) * 12 / 5 + 1);
 
-        serial.writeLine("red:")
-        serial.writeNumber(rawRed)
+        serial.writeValue("red:", rawRed)
 
-        serial.writeLine("green:")
-        serial.writeNumber(rawGreen)
+        serial.writeValue("green:", rawGreen)
 
-        serial.writeLine("blue:")
-        serial.writeNumber(rawBlue)
+        serial.writeValue("blue:", rawBlue)
 
     }
     
