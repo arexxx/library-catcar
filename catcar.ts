@@ -646,9 +646,7 @@ namespace CatCar {
         let x = 0;
         let t = 0;
 
-        const tcs_buffer = pins.createBuffer(1)
-        tcs_buffer[0] = tcs_command_bit | reg
-        pins.i2cWriteBuffer(tcs_adress, tcs_buffer, false)
+        pins.i2cWriteNumber(tcs_adress, tcs_command_bit | reg, NumberFormat.Int8LE)
         
         t = pins.i2cReadNumber(tcs_adress, NumberFormat.Int8LE)
         x = pins.i2cReadNumber(tcs_adress, NumberFormat.Int8LE)
