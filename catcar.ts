@@ -695,6 +695,10 @@ namespace CatCar {
     }
 
 
+
+
+    //% block="kleuren sensor uitlezen"
+    //% weight=153 group="Sensors"
     export function tcs_data():void {
 
         let rawRed = tcs_read16(tcs_rdatal)
