@@ -6,7 +6,7 @@
         "core": "*",
         "radio": "*",
         "neopixel": "github:microsoft/pxt-neopixel#v0.6.12",
-        "TCS34725": "github:adafruit/Adafruit_TCS34725"
+        "TCS34725": "https://github.com/adafruit/Adafruit_TCS34725#1.3.6"
     },
     "files": [
         "catcar.ts",
