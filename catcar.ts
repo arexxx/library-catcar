@@ -670,7 +670,7 @@ namespace CatCar {
         x = tcs_read8(tcs_id)
         serial.writeNumber(x)
 
-        if ((x != 0x4d) && (x != 0x43) && (x != 0x10)) {
+        if ((x != 0x4d) && (x != 0x44) && (x != 0x10)) {
             serial.writeLine("NOOOO")
             return false;
         }
