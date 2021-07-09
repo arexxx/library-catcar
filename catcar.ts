@@ -718,16 +718,9 @@ namespace CatCar {
         let rawClear = tcs_read16(tcs_cdatal)
         basic.pause((256 - tcs_integrationtime) * 12 / 5 + 1);
 
-        if (rawClear === 0){
-            rawRed = rawGreen = rawBlue = 0;
-            return;
-        }
-
-        let sum = rawClear
-
-        red = rawRed / sum * 255
-        green = rawGreen / sum * 255
-        blue = rawBlue / sum * 255
+        red = rawRed
+        green = rawGreen
+        blue = rawBlue
 
         serial.writeValue("red", red)
         serial.writeValue("green", green)
@@ -762,7 +755,7 @@ namespace CatCar {
     */ 
     //% block="kleur sensor is %colorIs " weight=152 group="Sensors"
     export function colorRead(colorIs: tcskleur, body: () => void): void {
-        if((colorIs === tcskleur.rood) && (redIs()<200) && (greenIs()>200) && (blueIs()>200)) {
+        if((colorIs === tcskleur.rood) && (redIs()>125) && (greenIs()<125) && (blueIs()<125)) {
         }
         
         if((colorIs === tcskleur.groen) && (redIs()>200) && (greenIs()<200) && (blueIs()>200)) {
