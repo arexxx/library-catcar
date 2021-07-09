@@ -659,12 +659,9 @@ namespace CatCar {
         let x = 0;
         let t = 0;
 
-        pins.i2cWriteNumber(tcs_adress, tcs_command_bit | reg, NumberFormat.Int8LE)
+        pins.i2cWriteNumber(tcs_adress, tcs_command_bit | reg, NumberFormat.Int16LE)
         
-        t = pins.i2cReadNumber(tcs_adress, NumberFormat.UInt8LE)
-        x = pins.i2cReadNumber(tcs_adress, NumberFormat.UInt8LE)
-
-        return x;
+        return pins.i2cReadNumber(tcs_adress, NumberFormat.UInt16LE)
 
     }
 
@@ -727,12 +724,12 @@ namespace CatCar {
         green = rawGreen / 10
         blue = rawBlue / 10
 
-        /*
+        
         serial.writeValue("red", red)
         serial.writeValue("green", green)
         serial.writeValue("blue", blue)
         serial.writeLine("-")
-        */
+        
     }
 
     //% blockId="redIs" block="rood is" weight=152 group="Sensors" advanced=true
@@ -757,7 +754,7 @@ namespace CatCar {
     //% weight=149 group="Sensors""
     export function roodtrue():boolean{
         tcs_data();
-        if ((red<125) && (green>125) && (blue>125)){
+        if ((red>600) && (green<250) && (blue<250)){
             serial.writeLine("het is rood")
             return true
         }
@@ -779,56 +776,11 @@ namespace CatCar {
     //% weight=147 group="Sensors""
     export function blauwtrue():boolean{
         tcs_data();
-        if ((red>125) && (green>125) && (blue<125)){
+        if ((red<200) && (green<250) && (blue>200)){
             serial.writeLine("het is blauw")
             return true
         }
         return false
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /**
-    * tcs34725 kleur uitlezen
-    * @param colorIs - (enum tcskleur)
-    * @param body TODO
-    */ 
-    //% block="kleur sensor is %colorIs " weight=152 group="Sensors"
-    /*
-    export function colorRead(colorIs: TCSkleur, body: () => void): void {
-        tcs_data();
-        serial.writeValue("red", red)
-        serial.writeValue("green", green)
-        serial.writeValue("blue", blue)
-        serial.writeLine("-")
-
-        if((colorIs === TCSkleur.rood) && (red<125) && (green>125) && (blue>125)) {
-            serial.writeLine("rood hier")
-        }
-        
-        while((colorIs === TCSkleur.groen) && (red>125) && (green<125) && (blue>125)) {
-            serial.writeLine("groen hier")
-        }
-        
-        while((colorIs === TCSkleur.blauw) && (red>125) && (green>125) && (blue<125)) {
-            serial.writeLine("blauw hier")
-        }
-    }
-    */    
-
 }
 
