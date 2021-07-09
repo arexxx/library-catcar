@@ -724,10 +724,12 @@ namespace CatCar {
         green = rawGreen / 10
         blue = rawBlue / 10
 
+        /*
         serial.writeValue("red", red)
         serial.writeValue("green", green)
         serial.writeValue("blue", blue)
         serial.writeLine("-")
+        */
     }
 
     //% blockId="redIs" block="rood is" weight=152 group="Sensors"
