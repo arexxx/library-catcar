@@ -711,16 +711,18 @@ namespace CatCar {
     //% block="kleuren sensor uitlezen"
     //% weight=153 group="Sensors"
     export function tcs_data() :void{
+        let rawRed = 0
+        let rawGreen = 0
+        let rawBlue = 0
 
-        let rawRed = tcs_read16(tcs_rdatal)
-        let rawGreen = tcs_read16(tcs_gdatal)
-        let rawBlue = tcs_read16(tcs_bdatal)
-        let rawClear = tcs_read16(tcs_cdatal)
-        basic.pause((256 - tcs_integrationtime) * 12 / 5 + 1);
-
-        red = rawRed
-        green = rawGreen
-        blue = rawBlue
+        for ( let i = 0; i < 10; i++){
+            rawRed = rawRed + tcs_read16(tcs_rdatal)
+            rawGreen = rawGreen + tcs_read16(tcs_gdatal)
+            rawBlue = rawBlue + tcs_read16(tcs_bdatal)
+        }
+        red = rawRed / 10
+        green = rawGreen / 10
+        blue = rawBlue / 10
 
         serial.writeValue("red", red)
         serial.writeValue("green", green)
@@ -744,9 +746,7 @@ namespace CatCar {
     export function blueIs(): number {
         tcs_data();
         return blue
-    }
-    
-    
+    }    
     
     /**
     * tcs34725 kleur uitlezen
