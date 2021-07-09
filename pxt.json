@@ -1,22 +1,17 @@
 {
-    "name": "Library CatCar",
-    "description": "",
+    "name": "Arexx-CatCar",
+    "version": "0.5.1",
+    "description": "Library for the Arexx Cat Car",
     "dependencies": {
         "core": "*",
         "radio": "*",
-        "microphone": "*",
         "neopixel": "github:microsoft/pxt-neopixel#v0.6.12"
     },
     "files": [
-        "main.blocks",
-        "main.ts",
-        "README.md",
-        "main.py",
-        "custom.ts"
+        "catcar.ts",
+        "README.md"
     ],
-    "testFiles": [
-        "test.ts"
-    ],
+    "public": true,
     "supportedTargets": [
         "microbit"
     ],

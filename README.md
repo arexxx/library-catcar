@@ -1,6 +1,4 @@
 
-> Open deze pagina op [https://arexxx.github.io/library-catcar/](https://arexxx.github.io/library-catcar/)
-
 ## Gebruiken als extensie
 
 Deze repository kan worden toegevoegd als **extensie** in MakeCode.
@@ -10,7 +8,7 @@ Deze repository kan worden toegevoegd als **extensie** in MakeCode.
 * klik op **Extensies** onder het tandwielmenu
 * zoeken naar **https://github.com/arexxx/library-catcar** en importeren
 
-## Dit project bewerken ![Badge buildstatus](https://github.com/arexxx/library-catcar/workflows/MakeCode/badge.svg)
+## Dit project bewerken ![Badge buildstatus](https://github.com/Arexx-Engineering/library-catcar/workflows/MakeCode/badge.svg)
 
 Om deze repository te bewerken in MakeCode.
 
