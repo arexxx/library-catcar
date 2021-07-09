@@ -763,15 +763,15 @@ namespace CatCar {
         serial.writeValue("blue", blue)
         serial.writeLine("-")
 
-        if((colorIs === TCSkleur.rood) /*&& (red<125) && (green>125) && (blue>125)*/) {
+        while((colorIs === TCSkleur.rood) && (red<125) && (green>125) && (blue>125)) {
             serial.writeLine("rood hier")
         }
         
-        if((colorIs === TCSkleur.groen) /*&& (red>125) && (green<125) && (blue>125)*/) {
+        while((colorIs === TCSkleur.groen) /*&& (red>125) && (green<125) && (blue>125)*/) {
             serial.writeLine("groen hier")
         }
         
-        if((colorIs === TCSkleur.blauw) /*&& (red>125) && (green>125) && (blue<125)*/) {
+        while((colorIs === TCSkleur.blauw) /*&& (red>125) && (green>125) && (blue<125)*/) {
             serial.writeLine("blauw hier")
         }
     }
