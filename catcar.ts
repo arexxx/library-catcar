@@ -633,7 +633,7 @@ namespace CatCar {
 
 
 
-    export enum tcskleur {
+    export enum TCSkleur {
       rood,
       groen,
       blauw
@@ -756,14 +756,16 @@ namespace CatCar {
     * @param body TODO
     */ 
     //% block="kleur sensor is %colorIs " weight=152 group="Sensors"
-    export function colorRead(colorIs: tcskleur, body: () => void): void {
-        if((colorIs === tcskleur.rood) && (redIs()<125) && (greenIs()>125) && (blueIs()>125)) {
+    export function colorRead(colorIs: TCSkleur, body: () => void): void {
+        tcs_data();
+        
+        if((colorIs === TCSkleur.rood) /*&& (red<125) && (green>125) && (blue>125)*/) {
         }
         
-        if((colorIs === tcskleur.groen) && (redIs()>125) && (greenIs()<125) && (blueIs()>125)) {
+        if((colorIs === TCSkleur.groen) && (red>125) && (green<125) && (blue>125)) {
         }
         
-        if((colorIs === tcskleur.blauw) && (redIs()>125) && (greenIs()>125) && (blueIs()<125)) {
+        if((colorIs === TCSkleur.blauw) && (red>125) && (green>125) && (blue<125)) {
         }
     }
 
