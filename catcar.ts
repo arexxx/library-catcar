@@ -659,7 +659,7 @@ namespace CatCar {
         let x = 0;
         let t = 0;
 
-        pins.i2cWriteNumber(tcs_adress, tcs_command_bit | reg, NumberFormat.Int16LE)
+        pins.i2cWriteNumber(tcs_adress, tcs_command_bit | reg, NumberFormat.Int8LE)
         
         return pins.i2cReadNumber(tcs_adress, NumberFormat.UInt16LE)
 
