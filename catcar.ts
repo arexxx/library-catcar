@@ -671,7 +671,7 @@ namespace CatCar {
 
 
     //% block="init kleuren sensor"
-    //% weight=154 group="Sensors"
+    //% weight=154 group="Sensors" advanced=true
 
     export function tcs_init():boolean{
         let x = 0
@@ -709,8 +709,11 @@ namespace CatCar {
 
 
     //% block="kleuren sensor uitlezen"
-    //% weight=153 group="Sensors"
+    //% weight=153 group="Sensors" advanced=true
     export function tcs_data() :void{
+        if (!tcs_initialised){
+            tcs_init();
+        }
         let rawRed = 0
         let rawGreen = 0
         let rawBlue = 0
@@ -732,23 +735,72 @@ namespace CatCar {
         */
     }
 
-    //% blockId="redIs" block="rood is" weight=152 group="Sensors"
+    //% blockId="redIs" block="rood is" weight=152 group="Sensors" advanced=true
     export function redIs(): number {
         tcs_data();
         return red
     }
 
-    //% blockId="greenIs" block="groen is" weight=151 group="Sensors"
+    //% blockId="greenIs" block="groen is" weight=151 group="Sensors" advanced=true
     export function greenIs(): number {
         tcs_data();
         return green
     }
 
-    //% blockId="blueIs" block="blauw is" weight=150 group="Sensors"
+    //% blockId="blueIs" block="blauw is" weight=150 group="Sensors" advanced=true
     export function blueIs(): number {
         tcs_data();
         return blue
     }    
+    
+    //% block="kleur is rood"
+    //% weight=149 group="Sensors""
+    export function roodtrue():boolean{
+        tcs_data();
+        if ((red<125) && (green>125) && (blue>125)){
+            serial.writeLine("het is rood")
+            return true
+        }
+        return false
+    }
+    
+    //% block="kleur is groen"
+    //% weight=148 group="Sensors""
+    export function groentrue():boolean{
+        tcs_data();
+        if ((red>125) && (green<125) && (blue>125)){
+            serial.writeLine("het is groen")
+            return true
+        }
+        return false
+    }
+
+    //% block="kleur is blauw"
+    //% weight=147 group="Sensors""
+    export function blauwtrue():boolean{
+        tcs_data();
+        if ((red>125) && (green>125) && (blue<125)){
+            serial.writeLine("het is blauw")
+            return true
+        }
+        return false
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     /**
     * tcs34725 kleur uitlezen
@@ -756,6 +808,7 @@ namespace CatCar {
     * @param body TODO
     */ 
     //% block="kleur sensor is %colorIs " weight=152 group="Sensors"
+    /*
     export function colorRead(colorIs: TCSkleur, body: () => void): void {
         tcs_data();
         serial.writeValue("red", red)
@@ -763,18 +816,19 @@ namespace CatCar {
         serial.writeValue("blue", blue)
         serial.writeLine("-")
 
-        while((colorIs === TCSkleur.rood) && (red<125) && (green>125) && (blue>125)) {
+        if((colorIs === TCSkleur.rood) && (red<125) && (green>125) && (blue>125)) {
             serial.writeLine("rood hier")
         }
         
-        while((colorIs === TCSkleur.groen) /*&& (red>125) && (green<125) && (blue>125)*/) {
+        while((colorIs === TCSkleur.groen) && (red>125) && (green<125) && (blue>125)) {
             serial.writeLine("groen hier")
         }
         
-        while((colorIs === TCSkleur.blauw) /*&& (red>125) && (green>125) && (blue<125)*/) {
+        while((colorIs === TCSkleur.blauw) && (red>125) && (green>125) && (blue<125)) {
             serial.writeLine("blauw hier")
         }
     }
+    */    
 
 }
 
