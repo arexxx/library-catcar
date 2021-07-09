@@ -758,14 +758,18 @@ namespace CatCar {
     //% block="kleur sensor is %colorIs " weight=152 group="Sensors"
     export function colorRead(colorIs: TCSkleur, body: () => void): void {
         tcs_data();
-        
+        serial.writeValue("red", red)
+        serial.writeValue("green", green)
+        serial.writeValue("blue", blue)
+        serial.writeLine("-")
+
         if((colorIs === TCSkleur.rood) /*&& (red<125) && (green>125) && (blue>125)*/) {
         }
         
-        if((colorIs === TCSkleur.groen) && (red>125) && (green<125) && (blue>125)) {
+        if((colorIs === TCSkleur.groen) /*&& (red>125) && (green<125) && (blue>125)*/) {
         }
         
-        if((colorIs === TCSkleur.blauw) && (red>125) && (green>125) && (blue<125)) {
+        if((colorIs === TCSkleur.blauw) /*&& (red>125) && (green>125) && (blue<125)*/) {
         }
     }
 
